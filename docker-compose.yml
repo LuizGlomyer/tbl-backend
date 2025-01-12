@@ -1,0 +1,29 @@
+services:
+  api:
+    container_name: tbl-api
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/usr/src/app
+      # Anonymous volume to not sync the depedencies inside container to the host machine
+      - /usr/src/app/node_modules
+    ports:
+      - "7777:7777"
+    environment:
+      NODE_ENV: development
+    command: npm run start:dev
+
+  db:
+    container_name: tbl-db
+    image: postgres:17.2
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+volumes:
+  pgdata:
