@@ -4,52 +4,56 @@ import { DrizzleService } from '../drizzle/drizzle.service';
 import { Users } from '../../db/schema/users';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
-import { DatabaseError } from 'pg';
+import { UpdateUsenameDTO } from './dto/update-username.dto';
+import { DatabaseSchema } from '../../db/schema/schema';
+import { UserEntity } from '../../db/schema/entities';
 
 @Injectable()
 export class UserRepository {
   constructor(private database: DrizzleService) {}
 
-  private get db(): NodePgDatabase {
+  private get db(): NodePgDatabase<typeof DatabaseSchema> {
     return this.database.getDatabase();
   }
 
-  async create(data: CreateUserDTO) {
-    try {
-      const user: typeof Users.$inferInsert = {
-        username: data.username,
-        email: data.email,
-        password: data.password,
-      };
+  async create(data: CreateUserDTO): Promise<UserEntity> {
+    const user: typeof Users.$inferInsert = {
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    };
+    const [newUser] = await this.db.insert(Users).values(user).returning();
 
-      await this.db.insert(Users).values(user);
-      console.log('New user created!');
-
-      const [newUser] = await this.db
-        .select()
-        .from(Users)
-        .where(eq(Users.email, data.email));
-
-      return newUser;
-    } catch (error) {
-      if (error instanceof DatabaseError && error.code === '23505') {
-        // TODO log error
-        return {
-          success: false,
-          errorMessage: error.message,
-          errorDetail: error.detail,
-        };
-      }
-    }
+    return newUser;
   }
 
-  async findAll() {
-    // TODO handle error
+  async findAll(): Promise<UserEntity[]> {
     return this.db.select().from(Users);
   }
 
-  async findById(id: number) {
-    return this.db.select().from(Users).where(eq(Users.id, id));
+  async findById(id: number): Promise<UserEntity> {
+    return this.db.query.Users.findFirst({
+      where: eq(Users.id, id),
+    });
+  }
+
+  async findByUsername(username: string): Promise<UserEntity> {
+    return this.db.query.Users.findFirst({
+      where: eq(Users.username, username),
+    });
+  }
+
+  async updateUsernameById(
+    id: number,
+    data: UpdateUsenameDTO,
+  ): Promise<UserEntity> {
+    const [updatedUsername] = await this.db
+      .update(Users)
+      .set({ username: data.username })
+      .where(eq(Users.id, id))
+      .returning();
+
+    return updatedUsername;
   }
 
   async deleteById(id: number) {

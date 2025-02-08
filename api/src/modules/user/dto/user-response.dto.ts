@@ -1,0 +1,19 @@
+import { UserEntity } from '../../../db/schema/entities';
+
+export class UserResponseDto {
+  id: number;
+  username: string;
+  email: string;
+  updated_at: Date;
+  created_at: Date;
+  deleted_at: Date;
+
+  constructor(user: UserEntity) {
+    this.id = user.id;
+    this.email = user.email;
+    this.username = user.username;
+    this.updated_at = user.updated_at;
+    this.created_at = user.created_at;
+    this.deleted_at = user.deleted_at;
+  }
+}
