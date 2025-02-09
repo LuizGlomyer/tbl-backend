@@ -1,17 +1,18 @@
 import { Catch, HttpException } from '@nestjs/common';
-import { ApplicationExceptionFilter } from './application-exception.filter';
+import { ApplicationExceptionFilter } from './application-exceptions.filter';
 
 @Catch(HttpException)
 export class HttpExceptionsFilter extends ApplicationExceptionFilter {
   handleException(exception: HttpException) {
-    const status = exception.getStatus();
+    const statusCode = exception.getStatus();
     const exceptionResponse = exception.getResponse();
     const message =
       typeof exceptionResponse === 'string'
         ? exceptionResponse
         : (exceptionResponse as any).message || 'Unknown error';
-    const logMessage: string = 'HttpException';
+    const context: string = 'HttpExceptionsFilter';
+    const hasToLog: boolean = false;
 
-    return { status, message, error: exception.name, logMessage };
+    return { statusCode, message, error: exception.name, context, hasToLog };
   }
 }

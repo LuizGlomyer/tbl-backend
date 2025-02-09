@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { UserModule } from './modules/user/user.module';
 import { RequestMetadataMiddleware } from './common/middleware/request-metadata.middleware';
+import { LoggerModule } from './modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RequestMetadataMiddleware } from './common/middleware/request-metadata.
       load: [configuration],
     }),
     UserModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -19,7 +19,7 @@ export class ResponseInterceptor implements NestInterceptor {
         traceId: request.headers['x-trace-id'],
         requestTimestamp: request.headers['x-request-timestamp'],
         responseTimestamp: new Date().toISOString(),
-        status: response.statusCode,
+        statusCode: response.statusCode,
         payload: data ?? {},
       })),
     );

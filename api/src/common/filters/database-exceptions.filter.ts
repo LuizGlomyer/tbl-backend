@@ -1,15 +1,16 @@
 import { Catch } from '@nestjs/common';
-import { ApplicationExceptionFilter } from './application-exception.filter';
+import { ApplicationExceptionFilter } from './application-exceptions.filter';
 import { DatabaseError } from 'pg';
 
 @Catch(DatabaseError)
 export class DatabaseExceptionsFilter extends ApplicationExceptionFilter {
   handleException(exception: DatabaseError) {
-    const status = 500;
+    const statusCode = 500;
     const message = exception.detail;
     const error = 'Database Error';
-    const logMessage: string = 'DatabaseError';
+    const context: string = 'DatabaseExceptionsFilter';
+    const hasToLog: boolean = true;
 
-    return { status, message, error, logMessage };
+    return { statusCode, message, error, context, hasToLog };
   }
 }

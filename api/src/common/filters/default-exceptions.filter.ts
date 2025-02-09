@@ -1,13 +1,14 @@
 import { Catch } from '@nestjs/common';
-import { ApplicationExceptionFilter } from './application-exception.filter';
+import { ApplicationExceptionFilter } from './application-exceptions.filter';
 
 @Catch()
 export class DefaultExceptionsFilter extends ApplicationExceptionFilter {
   handleException(exception: unknown) {
-    const status = 500;
+    const statusCode = 500;
     const message = 'A server error has ocurred';
-    const logMessage: string = 'DefaultException';
+    const context: string = 'DefaultExceptionsFilter';
+    const hasToLog: boolean = true;
 
-    return { status, message, error: exception, logMessage };
+    return { statusCode, message, error: exception, context, hasToLog };
   }
 }
