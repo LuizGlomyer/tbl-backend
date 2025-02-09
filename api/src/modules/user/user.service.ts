@@ -15,6 +15,11 @@ export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   async create(data: CreateUserDTO) {
+    const usernameAlreadyExists = await this.userRepository.findByUsername(
+      data.username,
+    );
+    if (usernameAlreadyExists) throw new AlreadyExistsException('username');
+
     data.password = await argon2.hash(data.password);
     const newUser = await this.userRepository.create(data);
     return new UserResponseDto(newUser);

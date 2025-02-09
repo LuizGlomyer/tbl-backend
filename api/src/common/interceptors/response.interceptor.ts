@@ -20,7 +20,7 @@ export class ResponseInterceptor implements NestInterceptor {
         requestTimestamp: request.headers['x-request-timestamp'],
         responseTimestamp: new Date().toISOString(),
         status: response.statusCode,
-        payload: data,
+        payload: data ?? {},
       })),
     );
   }

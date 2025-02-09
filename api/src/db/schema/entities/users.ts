@@ -1,5 +1,5 @@
 import { integer, pgTable, varchar } from 'drizzle-orm/pg-core';
-import { timestamps } from '../helpers';
+import { timestamps } from '../../helpers';
 
 export const TABLE_USERS = 'users';
 
