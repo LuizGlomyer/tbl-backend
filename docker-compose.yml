@@ -8,12 +8,15 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./api:/usr/src/app
-      # Anonymous volume to not sync the depedencies inside container to the host machine
+      # Anonymous volume to not sync the depedencies inside container to the host machine,
+      # otherwise it will create file permission issues when running the API locally.
+      # If running with Docker, comment the next line
       - /usr/src/app/node_modules
     ports:
       - "7777:7777"
     environment:
-      NODE_ENV: development
+      - NODE_ENV=development-docker
+      - DB_HOST=db
     command: npm run start:dev
 
   db:

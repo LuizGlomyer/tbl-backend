@@ -11,8 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.useGlobalInterceptors(new ResponseInterceptor());
-  const loggerService = app.get(LoggerService); // Retrieve LoggerService instance
-  console.log(loggerService)
+  const loggerService = app.get(LoggerService);
 
   app.useGlobalFilters(
     new DefaultExceptionsFilter(loggerService),

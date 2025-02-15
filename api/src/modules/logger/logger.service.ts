@@ -29,7 +29,6 @@ export interface LogMessage extends LogData {
 export class LoggerService {
   private readonly appLogger = new Logger('MyService.name');
 
-
   constructor(private logRepository: LogRepository) {}
 
   trace(data: LogData) {
