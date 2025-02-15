@@ -16,4 +16,8 @@ export class UserResponseDto {
     this.created_at = user.created_at;
     this.deleted_at = user.deleted_at;
   }
+
+  static fromList(users: UserEntity[]): UserResponseDto[] {
+    return users.map((user) => new UserResponseDto(user));
+  }
 }

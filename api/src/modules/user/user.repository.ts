@@ -43,6 +43,12 @@ export class UserRepository {
     });
   }
 
+  async findByEmail(email: string): Promise<UserEntity> {
+    return this.db.query.Users.findFirst({
+      where: eq(Users.email, email),
+    });
+  }
+
   async updateUsernameById(
     id: number,
     data: UpdateUsenameDTO,

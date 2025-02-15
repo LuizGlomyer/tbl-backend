@@ -1,24 +1,30 @@
 import {
   BadRequestException,
-  ConflictException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDTO } from './dto/create-user.dto';
+import { CreateUserDTO, MIN_USERNAME_LENGTH } from './dto/create-user.dto';
 import { UserRepository } from './user.repository';
 import * as argon2 from 'argon2';
 import { UpdateUsenameDTO } from './dto/update-username.dto';
 import { AlreadyExistsException } from '../../common/exceptions/already-exists.exception';
 import { UserResponseDto } from './dto/user-response.dto';
+import { USERS_MAX_LENGTH_USERNAME } from '../../db/schema/tables/users';
 
 @Injectable()
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   async create(data: CreateUserDTO) {
+    this.validateUsername(data.username);
+
     const usernameAlreadyExists = await this.userRepository.findByUsername(
       data.username,
     );
     if (usernameAlreadyExists) throw new AlreadyExistsException('username');
+
+    const emailAlreadyInUse = await this.userRepository.findByEmail(data.email);
+    if (emailAlreadyInUse) throw new AlreadyExistsException('email');
 
     data.password = await argon2.hash(data.password);
     const newUser = await this.userRepository.create(data);
@@ -27,19 +33,20 @@ export class UserService {
 
   async findAll() {
     const users = await this.userRepository.findAll();
-    return users;
+    return UserResponseDto.fromList(users);
   }
 
   async findById(id: number) {
-    const user = await this.userRepository.findById(id);
-    return user;
+    const foundUser = await this.userRepository.findById(id);
+    if (!foundUser) throw new NotFoundException();
+    return new UserResponseDto(foundUser);
   }
 
   async updateUsernameById(id: number, data: UpdateUsenameDTO) {
     this.validateUsername(data.username);
 
-    const userToUpdate = await this.findById(id);
-    if (!userToUpdate) throw new ConflictException('This user does not exist');
+    const userToUpdate = await this.userRepository.findById(id);
+    if (!userToUpdate) throw new NotFoundException('This user does not exist');
 
     const usernameAlreadyExists = await this.userRepository.findByUsername(
       data.username,
@@ -50,14 +57,17 @@ export class UserService {
     return new UserResponseDto(updatedUser);
   }
 
-  async delete(id: number) {
+  async deleteById(id: number) {
+    const userToDelete = await this.userRepository.findById(id);
+    if (!userToDelete) throw new NotFoundException();
     await this.userRepository.deleteById(id);
   }
 
   validateUsername(username: string) {
-    const minUsernameLength = 8;
     const isValid =
-      /^[a-zA-Z0-9_.]+$/.test(username) && username.length >= minUsernameLength;
+      /^[a-zA-Z0-9_.]+$/.test(username) &&
+      username.length >= MIN_USERNAME_LENGTH &&
+      username.length <= USERS_MAX_LENGTH_USERNAME;
     if (!isValid) throw new BadRequestException('This username is not valid');
   }
 }
