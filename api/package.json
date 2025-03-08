@@ -23,6 +23,7 @@
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@neo4j/cypher-builder": "^2.3.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^10.0.0",
@@ -32,6 +33,7 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.4",
+    "neo4j-driver": "^5.28.1",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"

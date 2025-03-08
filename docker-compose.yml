@@ -11,7 +11,7 @@ services:
       # Anonymous volume to not sync the depedencies inside container to the host machine,
       # otherwise it will create file permission issues when running the API locally.
       # If running with Docker, comment the next line
-      - /usr/src/app/node_modules
+      #- /usr/src/app/node_modules
     ports:
       - "7777:7777"
     environment:
@@ -28,5 +28,35 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+  
+  memgraph:
+    image: memgraph/memgraph-mage:latest
+    container_name: tbl-memgraph-mage
+    pull_policy: always
+    ports:
+      - "7687:7687"
+      - "7444:7444"
+    volumes:
+      - v_mg_lib:/var/lib/memgraph
+      - v_mg_etc:/etc/memgraph
+      - v_mg_log:/var/log/memgraph
+    command: ["--log-level=TRACE"]
+
+  memgraph-lab:
+    image: memgraph/lab:latest
+    container_name: tbl-memgraph-lab
+    pull_policy: always
+    ports:
+      - "3222:3000"
+    depends_on:
+      - memgraph
+    environment:
+      - QUICK_CONNECT_MG_HOST=memgraph
+      # If using windows - QUICK_CONNECT_MG_HOST=host.docker.internal
+      - QUICK_CONNECT_MG_PORT=7687
+
 volumes:
   pgdata:
+  v_mg_lib:
+  v_mg_etc:
+  v_mg_log:
