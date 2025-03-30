@@ -1,6 +1,14 @@
-import { Create, Node, Param, Pattern } from '@neo4j/cypher-builder';
+import Cypher, {
+  Create,
+  eq,
+  Match,
+  Node,
+  Param,
+  Pattern,
+  Relationship,
+  Return,
+} from '@neo4j/cypher-builder';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import neo4j, { Driver, QueryResult, RecordShape, Session } from 'neo4j-driver';
 
 export interface GraphNode {
@@ -28,37 +36,6 @@ export class GraphRepository implements OnModuleInit, OnModuleDestroy {
   }
 
   async getAllNodesWithRelationships() {
-    // const person = {
-    //   name: 'name',
-    //   dateOfBirth: 'dateOfBirth',
-    //   createdAt: 'createdAt',
-    // };
-    // const queryTest = `
-    //   CREATE (p:Person { name: $name, dateOfBirth: $dateOfBirth, createdAt: $createdAt })
-    //   RETURN p
-    // `;
-    // const resultTest = await this.session.run(queryTest, person);
-    // return {
-    //   properties: resultTest.records.map(
-    //     (record) => record.get('p').properties,
-    //   ),
-    //   resultTest,
-    // };
-
-    // interface t1 {
-    //   a: string;
-    // }
-
-    // interface t2 extends t1 {
-    //   b: string;
-    // }
-
-    // const n1: t2 = { a: '1', b: '2' };
-    // const n2: t1 = n1;
-
-    // console.log({ n1, n2 });
-
-    // const query = 'MATCH (n) RETURN n LIMIT 10';
     const query = 'MATCH (n)-[e]->(m) RETURN n,e,m;';
     const params = {};
 
@@ -70,28 +47,78 @@ export class GraphRepository implements OnModuleInit, OnModuleDestroy {
     return result.records.map((record) => record.toObject());
   }
 
-  async createNode(data) {
-    const { media, relationships, types } = data;
+  async createNode(data, newNodeId: string) {
+    const { node } = data;
+    console.log({ node });
+    const timestamp: string = new Date().toISOString();
     console.log(data);
-    const node = new Node();
-    const pattern = new Pattern(node, { labels: types });
+    const newNode = new Node();
+    const nodePattern = new Pattern(newNode, { labels: node.labels });
 
-    let createQuery = new Create(pattern)
-      .set([node.property('id'), new Param(randomUUID())])
-      .set([node.property('createdAt'), new Param(new Date().toISOString())]);
+    let createQuery = new Create(nodePattern)
+      .set([newNode.property('id'), new Param(newNodeId)])
+      .set([newNode.property('createdAt'), new Param(timestamp)]);
 
-    Object.keys(media).forEach((key) => {
+    Object.keys(node.properties).forEach((key) => {
       createQuery = createQuery.set([
-        node.property(key),
-        new Param(media[key]),
+        newNode.property(key),
+        new Param(node.properties[key]),
       ]);
     });
 
-    const finalQuery = createQuery.return(node);
+    const finalQuery = createQuery.return(newNode);
 
     const { cypher, params } = finalQuery.build();
+    console.log('\n\nfinal query');
+    console.log(finalQuery.toString());
     console.log({ cypher, params });
     return this.execute(cypher, params);
+  }
+
+  async createRelationship(rel, newNodeId: string) {
+    console.log(rel);
+    const sourceNode = new Node();
+    const queryParts: Cypher.Clause[] = [];
+
+    queryParts.push(
+      new Match(new Pattern(sourceNode)).where(
+        eq(sourceNode.property('id'), new Param(newNodeId)),
+      ),
+    );
+
+    const targetNode = new Node();
+    const targetPattern = new Pattern(targetNode, { labels: rel.nodeLabels });
+
+    queryParts.push(
+      new Match(targetPattern).where(
+        eq(targetNode.property('id'), new Param(rel.targetId)),
+      ),
+    );
+
+    const relationship = new Relationship();
+    const relationshipPattern = new Pattern(sourceNode)
+      .related(relationship, { type: rel.type })
+      .to(targetNode);
+
+    const createRel = new Create(relationshipPattern);
+
+    if (rel.properties) {
+      Object.keys(rel.properties).forEach((key) => {
+        createRel.set([
+          relationship.property(key),
+          new Param(rel.properties[key]),
+        ]);
+      });
+    }
+
+    queryParts.push(createRel);
+    queryParts.push(new Return(sourceNode));
+    const query = Cypher.utils.concat(...queryParts);
+
+    const { cypher, params } = query.build();
+    console.log({ cypher, params });
+
+    return await this.execute(cypher, params);
   }
 
   // async createNode(type: string, properties: Omit<GraphNode, 'id' | 'type'>) {
@@ -120,7 +147,9 @@ export class GraphRepository implements OnModuleInit, OnModuleDestroy {
   }
 
   async execute(query: string, properties) {
-    const result: QueryResult<RecordShape> = await this.session.run(
+    const session = this.driver.session();
+
+    const result: QueryResult<RecordShape> = await session.run(
       query,
       properties,
     );

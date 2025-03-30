@@ -3,6 +3,11 @@ export interface Node {
 }
 
 export interface Media extends Node {
+  labels: string[];
+  properties: MediaProperties;
+}
+
+export interface MediaProperties {
   name: string;
   alternativeNames?: string[];
   acronym?: string; // BotW, AoT etc
@@ -13,9 +18,13 @@ export interface Media extends Node {
 
 export interface Relationship {
   id?: string;
-  name: string;
   type: string;
+  labels: string[];
   targetId: string;
+  properties: RelationshipProperties;
+}
+
+export interface RelationshipProperties {
   when?: Date;
   since?: Date;
 }

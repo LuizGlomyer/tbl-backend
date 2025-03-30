@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { GraphRepository } from './graph.repository';
 import { Media, Relationship } from './schemas/common';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class GraphService {
@@ -21,8 +22,13 @@ export class GraphService {
     return this.graphRepository.deleteNodeById(node.id);
   }
 
-  async create(data: Media) {
-    return await this.graphRepository.createNode(data);
+  async create(data) {
+    const newNodeId = randomUUID();
+    await this.graphRepository.createNode(data, newNodeId);
+    data.relationships.forEach(async (rel) => {
+      await this.graphRepository.createRelationship(rel, newNodeId);
+    });
+    // return;
 
     // const queryBuilder = new CypherQueryBuilder();
     // queryBuilder.createNode('User', data, 'n');
