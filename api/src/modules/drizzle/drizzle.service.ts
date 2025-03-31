@@ -21,7 +21,7 @@ export class DrizzleService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleInit() {
-    console.log('DrizzleService initialized');
+    console.log('DrizzleService connection initialized');
   }
 
   async onModuleDestroy() {

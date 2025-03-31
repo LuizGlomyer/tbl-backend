@@ -13,7 +13,7 @@ export abstract class ApplicationExceptionFilter implements ExceptionFilter {
     hasToLog: boolean;
   };
 
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
@@ -25,6 +25,7 @@ export abstract class ApplicationExceptionFilter implements ExceptionFilter {
     const { statusCode, message, error, context, hasToLog } =
       this.handleException(exception);
 
+    console.error(exception);
     if (hasToLog)
       this.loggerService.error({
         timestamp: new Date(),
@@ -34,7 +35,12 @@ export abstract class ApplicationExceptionFilter implements ExceptionFilter {
         trace_id: traceId,
         method: request.method,
         url: request.url,
-        error_stack: exception,
+        error_stack: {
+          ...exception,
+          message: exception.message,
+          name: exception.name,
+          stack: exception.stack,
+        },
       });
 
     const errorResponse = {
