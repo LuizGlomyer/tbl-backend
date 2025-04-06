@@ -6,7 +6,6 @@ export class UserResponseDto {
   email: string;
   updated_at: Date;
   created_at: Date;
-  deleted_at: Date;
 
   constructor(user: UserEntity) {
     this.id = user.id;
@@ -14,7 +13,6 @@ export class UserResponseDto {
     this.username = user.username;
     this.updated_at = user.updated_at;
     this.created_at = user.created_at;
-    this.deleted_at = user.deleted_at;
   }
 
   static fromList(users: UserEntity[]): UserResponseDto[] {

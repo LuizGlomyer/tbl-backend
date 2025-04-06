@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { DatabaseSchema } from '../../db/schema/schema';
+import { DatabaseType } from '../../db/schema/schema';
 import {
   Logs,
   LOGS_MAX_LENGTH_CONTEXT,
@@ -16,7 +16,7 @@ import { truncateMaxLength } from '../../db/helpers';
 export class LogRepository {
   constructor(private database: DrizzleService) {}
 
-  private get db(): NodePgDatabase<typeof DatabaseSchema> {
+  private get db(): NodePgDatabase<DatabaseType> {
     return this.database.getDatabase();
   }
 

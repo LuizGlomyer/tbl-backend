@@ -24,7 +24,6 @@ export const userMario: UserEntity = {
   password: 'bingbingwahoo',
   updated_at: null,
   created_at: new Date(),
-  deleted_at: null,
 };
 
 export const userSolidSnake: UserEntity = {
@@ -34,5 +33,4 @@ export const userSolidSnake: UserEntity = {
   password: 'keptyouwaitinghuh',
   updated_at: null,
   created_at: new Date(),
-  deleted_at: null,
 };
