@@ -1,5 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreatePlatformDTO } from './dto/create-platform.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { RequestCreatePlatformDTO } from './dto/create-platform.dto';
 import { PlatformsService } from './platforms.service';
 
 @Controller('platforms')
@@ -7,7 +15,7 @@ export class PlatformsController {
   constructor(private readonly platformsService: PlatformsService) {}
 
   @Post()
-  async create(@Body() data: CreatePlatformDTO) {
+  async create(@Body() data: RequestCreatePlatformDTO) {
     return this.platformsService.create(data);
   }
 
@@ -16,28 +24,16 @@ export class PlatformsController {
     return this.platformsService.findAll();
   }
 
-  // @Get()
-  // async findAll() {
-  //   return this.userService.findAll();
-  // }
+  @Get(':id')
+  async findById(@Param('id', ParseIntPipe) id: number) {
+    return this.platformsService.findById(id);
+  }
 
-  // @Get(':id')
-  // async findById(@Param('id', ParseIntPipe) id: number) {
-  //   return this.userService.findById(id);
-  // }
-
-  // @Patch(':id')
-  // async updateUsernameById(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() data: UpdateUsenameDTO,
-  // ) {
-  //   return this.userService.updateUsernameById(id, data);
-  // }
-
-  // @Delete(':id')
-  // async deleteById(@Param('id', ParseIntPipe) id: number) {
-  //   return {
-  //     success: await this.userService.deleteById(id),
-  //   };
-  // }
+  @Put(':id')
+  async updatePlatformById(
+    @Param('id', ParseIntPipe) platformId: number,
+    @Body() data: RequestCreatePlatformDTO,
+  ) {
+    return this.platformsService.updatePlatformById(platformId, data);
+  }
 }

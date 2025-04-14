@@ -5,6 +5,7 @@ import { DatabaseType } from '../../../db/schema/schema';
 import { Media } from '../../../db/schema/tables/content/media';
 import { CreateMediaDTO } from './dto/create-media.dto';
 import { MediaEntity } from '../../../db/schema/entities';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class MediaRepository {
@@ -14,8 +15,36 @@ export class MediaRepository {
     return this.database.getDatabase();
   }
 
-  async create(tx, data: CreateMediaDTO): Promise<MediaEntity> {
+  async createWithTransaction(tx, data: CreateMediaDTO): Promise<MediaEntity> {
     const [newMedia] = await tx.insert(Media).values(data).returning();
     return newMedia;
+  }
+
+  async updatePlatformWithTransaction(
+    tx,
+    mediaId: number,
+    data: CreateMediaDTO,
+  ): Promise<MediaEntity> {
+    const [updatedMedia] = await tx
+      .update(Media)
+      .set({ ...data, updated_at: new Date() })
+      .where(eq(Media.id, mediaId))
+      .returning();
+
+    return updatedMedia;
+  }
+
+  async findById(id: number): Promise<MediaEntity> {
+    return this.db.query.Media.findFirst({
+      where: eq(Media.id, id),
+    });
+  }
+
+  async deleteById(id: number): Promise<MediaEntity> {
+    const [deletedMedia] = await this.db
+      .delete(Media)
+      .where(eq(Media.id, id))
+      .returning();
+    return deletedMedia;
   }
 }

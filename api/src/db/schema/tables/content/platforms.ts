@@ -8,7 +8,7 @@ export const Platforms = pgTable(TABLE_PLATFORMS, {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   mediaId: integer()
     .notNull()
-    .references(() => Media.id),
+    .references(() => Media.id, { onDelete: 'cascade' }),
   manufacturer: varchar({ length: GENERIC_MAX_LENGTH }),
   ...timestamps,
 });

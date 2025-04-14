@@ -25,8 +25,8 @@ export abstract class ApplicationExceptionFilter implements ExceptionFilter {
     const { statusCode, message, error, context, hasToLog } =
       this.handleException(exception);
 
-    console.error(exception);
-    if (hasToLog)
+    if (hasToLog) {
+      console.error(exception);
       this.loggerService.error({
         timestamp: new Date(),
         message: `An exception has ocurred: ${message}`,
@@ -42,6 +42,7 @@ export abstract class ApplicationExceptionFilter implements ExceptionFilter {
           stack: exception.stack,
         },
       });
+    }
 
     const errorResponse = {
       requestId,
