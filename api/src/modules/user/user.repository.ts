@@ -55,14 +55,18 @@ export class UserRepository {
   ): Promise<UserEntity> {
     const [updatedUsername] = await this.db
       .update(Users)
-      .set({ username: data.username })
+      .set({ username: data.username }) // , updated_at: new Date()
       .where(eq(Users.id, id))
       .returning();
 
     return updatedUsername;
   }
 
-  async deleteById(id: number) {
-    return this.db.delete(Users).where(eq(Users.id, id)).returning();
+  async deleteById(id: number): Promise<UserEntity> {
+    const [deletedUser] = await this.db
+      .delete(Users)
+      .where(eq(Users.id, id))
+      .returning();
+    return deletedUser;
   }
 }

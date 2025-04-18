@@ -8,6 +8,7 @@ export class UserResponseDto {
   created_at: Date;
 
   constructor(user: UserEntity) {
+    if (!user) return;
     this.id = user.id;
     this.email = user.email;
     this.username = user.username;

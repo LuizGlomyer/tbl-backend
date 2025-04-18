@@ -38,7 +38,6 @@ export class UserService {
 
   async findById(id: number) {
     const foundUser = await this.userRepository.findById(id);
-    if (!foundUser) throw new NotFoundException();
     return new UserResponseDto(foundUser);
   }
 
@@ -58,9 +57,10 @@ export class UserService {
   }
 
   async deleteById(id: number) {
-    const userToDelete = await this.userRepository.findById(id);
-    if (!userToDelete) throw new NotFoundException();
-    await this.userRepository.deleteById(id);
+    const userToDelete = await this.findById(id);
+    if (!userToDelete.id) throw new NotFoundException();
+    const deletedUser = await this.userRepository.deleteById(id);
+    return new UserResponseDto(deletedUser);
   }
 
   validateUsername(username: string) {
