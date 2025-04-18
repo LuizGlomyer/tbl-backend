@@ -18,5 +18,5 @@ export class CreateMediaDTO {
 
   @IsArray()
   @IsString({ each: true })
-  imageUrls: string;
+  imageUrls: string[];
 }
