@@ -1,38 +1,39 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { GamesService } from './games.service';
-import { CreateGameDTO } from './dto/create-game.dto';
+import { RequestCreateGameDTO } from './dto/create-game.dto';
 
 @Controller('games')
 export class GamesController {
   constructor(private readonly gamesService: GamesService) {}
 
   @Post()
-  async create(@Body() data: CreateGameDTO) {
+  async create(@Body() data: RequestCreateGameDTO) {
     return this.gamesService.create(data);
   }
 
-  // @Get()
-  // async findAll() {
-  //   return this.userService.findAll();
-  // }
+  @Get()
+  async findAll() {
+    return this.gamesService.findAll();
+  }
 
-  // @Get(':id')
-  // async findById(@Param('id', ParseIntPipe) id: number) {
-  //   return this.userService.findById(id);
-  // }
+  @Get(':id')
+  async findById(@Param('id', ParseIntPipe) id: number) {
+    return this.gamesService.findByIdOrThrow(id);
+  }
 
-  // @Patch(':id')
-  // async updateUsernameById(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() data: UpdateUsenameDTO,
-  // ) {
-  //   return this.userService.updateUsernameById(id, data);
-  // }
-
-  // @Delete(':id')
-  // async deleteById(@Param('id', ParseIntPipe) id: number) {
-  //   return {
-  //     success: await this.userService.deleteById(id),
-  //   };
-  // }
+  @Put(':id')
+  async updateById(
+    @Param('id', ParseIntPipe) gameId: number,
+    @Body() data: RequestCreateGameDTO,
+  ) {
+    return this.gamesService.updateById(gameId, data);
+  }
 }
