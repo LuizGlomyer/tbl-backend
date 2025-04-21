@@ -5,6 +5,7 @@ import {
 import { CreateMediaDTO } from '../../src/common/dto/create-media.dto';
 import { MediaWithGames } from '../../src/common/types/media.type';
 import { GamesEntity, MediaEntity } from '../../src/db/schema/entities';
+import { TABLE_GAMES } from '../../src/db/schema/tables/content/games';
 
 import { GamesRepository } from '../../src/modules/content/games/games.repository';
 import { mockPlaystation4 } from './platforms.mocks';
@@ -44,6 +45,7 @@ export const requestDeathStranding: RequestCreateGameDTO = {
 const entityMediaDeathStranding: MediaEntity = {
   ...mediaDeathStranding,
   id: 8,
+  type: TABLE_GAMES,
   updated_at: null,
   created_at: new Date(),
 };

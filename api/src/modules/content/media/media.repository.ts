@@ -3,7 +3,10 @@ import { DrizzleService } from '../../drizzle/drizzle.service';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DatabaseType } from '../../../db/schema/schema';
 import { Media } from '../../../db/schema/tables/content/media';
-import { CreateMediaDTO } from '../../../common/dto/create-media.dto';
+import {
+  CreateMediaDTO,
+  InsertMediaDTO,
+} from '../../../common/dto/create-media.dto';
 import { MediaEntity } from '../../../db/schema/entities';
 import { eq } from 'drizzle-orm';
 
@@ -15,7 +18,7 @@ export class MediaRepository {
     return this.database.getDatabase();
   }
 
-  async createWithTransaction(tx, data: CreateMediaDTO): Promise<MediaEntity> {
+  async createWithTransaction(tx, data: InsertMediaDTO): Promise<MediaEntity> {
     const [newMedia] = await tx.insert(Media).values(data).returning();
     return newMedia;
   }

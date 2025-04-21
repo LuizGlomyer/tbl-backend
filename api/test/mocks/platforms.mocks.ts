@@ -6,6 +6,7 @@ import {
 import { PlatformsRepository } from '../../src/modules/content/platforms/platforms.repository';
 import { MediaEntity, PlatformsEntity } from '../../src/db/schema/entities';
 import { CreateMediaDTO } from '../../src/common/dto/create-media.dto';
+import { TABLE_PLATFORMS } from '../../src/db/schema/tables/content/platforms';
 
 export const PlatformsRepositoryMock: {
   provide: typeof PlatformsRepository;
@@ -42,6 +43,7 @@ export const requestPlaystation4: RequestCreatePlatformDTO = {
 const entityMediaPlaystation: MediaEntity = {
   ...mediaPlaystation4,
   id: 5,
+  type: TABLE_PLATFORMS,
   updated_at: null,
   created_at: new Date(),
 };

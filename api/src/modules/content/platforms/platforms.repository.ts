@@ -7,7 +7,10 @@ import {
   InsertPlatformDTO,
   CreatePlatformDTO,
 } from '../../../common/dto/create-platform.dto';
-import { Platforms } from '../../../db/schema/tables/content/platforms';
+import {
+  Platforms,
+  TABLE_PLATFORMS,
+} from '../../../db/schema/tables/content/platforms';
 import { MediaRepository } from '../media/media.repository';
 import { MediaEntity, PlatformsEntity } from '../../../db/schema/entities';
 import { MediaWithPlatform } from '../../../common/types/media.type';
@@ -28,7 +31,10 @@ export class PlatformsRepository {
   async create(data: RequestCreatePlatformDTO): Promise<MediaWithPlatform> {
     const result: MediaWithPlatform = await this.db.transaction(async (tx) => {
       const media: MediaEntity =
-        await this.mediaRepository.createWithTransaction(tx, data.media);
+        await this.mediaRepository.createWithTransaction(tx, {
+          ...data.media,
+          type: TABLE_PLATFORMS,
+        });
       const platforms: PlatformsEntity = await this.createWithTransaction(tx, {
         ...data.platforms,
         mediaId: media.id,

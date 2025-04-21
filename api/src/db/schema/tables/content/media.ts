@@ -9,6 +9,7 @@ export const TABLE_MEDIA = 'media';
 
 export const Media = pgTable(TABLE_MEDIA, {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  type: varchar({ length: NAME_MAX_LENGTH }).notNull(),
   name: varchar({ length: NAME_MAX_LENGTH }).notNull(),
   acronym: varchar({ length: GENERIC_MAX_LENGTH }),
   description: text(),

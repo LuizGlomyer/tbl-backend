@@ -20,3 +20,7 @@ export class CreateMediaDTO {
   @IsString({ each: true })
   imageUrls: string[];
 }
+
+export class InsertMediaDTO extends CreateMediaDTO {
+  type: string;
+}

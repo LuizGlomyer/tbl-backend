@@ -10,7 +10,7 @@ import { DrizzleService } from '../../drizzle/drizzle.service';
 import { DatabaseType } from '../../../db/schema/schema';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { GamesEntity, MediaEntity } from '../../../db/schema/entities';
-import { Games } from '../../../db/schema/tables/content/games';
+import { Games, TABLE_GAMES } from '../../../db/schema/tables/content/games';
 import { Media } from '../../../db/schema/tables/content/media';
 import { eq } from 'drizzle-orm';
 
@@ -28,7 +28,10 @@ export class GamesRepository {
   async create(data: RequestCreateGameDTO): Promise<MediaWithGames> {
     const result: MediaWithGames = await this.db.transaction(async (tx) => {
       const media: MediaEntity =
-        await this.mediaRepository.createWithTransaction(tx, data.media);
+        await this.mediaRepository.createWithTransaction(tx, {
+          ...data.media,
+          type: TABLE_GAMES,
+        });
       const games: GamesEntity = await this.createWithTransaction(tx, {
         ...data.games,
         mediaId: media.id,

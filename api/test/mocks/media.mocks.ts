@@ -17,6 +17,7 @@ export const MediaRepositoryMock: {
 export const genericMedia: MediaEntity = {
   id: 1,
   name: 'Media',
+  type: 'test',
   acronym: 'M',
   description: 'Media',
   imageCoverUrl: 'm.gif',
