@@ -15,7 +15,7 @@ export class PlatformsService {
     return this.platformsRepository.findAll();
   }
 
-  async findById(id: number): Promise<MediaWithPlatform> {
+  async findById(id: number): Promise<MediaWithPlatform | undefined> {
     const platform = await this.platformsRepository.findById(id);
     return platform;
   }

@@ -55,7 +55,7 @@ export class PlatformsRepository {
       .innerJoin(Media, eq(Platforms.mediaId, Media.id));
   }
 
-  async findById(id: number): Promise<MediaWithPlatform> {
+  async findById(id: number): Promise<MediaWithPlatform | undefined> {
     const [platform] = await this.db
       .select()
       .from(Platforms)

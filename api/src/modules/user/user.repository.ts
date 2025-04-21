@@ -31,19 +31,19 @@ export class UserRepository {
     return this.db.select().from(Users);
   }
 
-  async findById(id: number): Promise<UserEntity> {
+  async findById(id: number): Promise<UserEntity | undefined> {
     return this.db.query.Users.findFirst({
       where: eq(Users.id, id),
     });
   }
 
-  async findByUsername(username: string): Promise<UserEntity> {
+  async findByUsername(username: string): Promise<UserEntity | undefined> {
     return this.db.query.Users.findFirst({
       where: eq(Users.username, username),
     });
   }
 
-  async findByEmail(email: string): Promise<UserEntity> {
+  async findByEmail(email: string): Promise<UserEntity | undefined> {
     return this.db.query.Users.findFirst({
       where: eq(Users.email, email),
     });
@@ -55,7 +55,7 @@ export class UserRepository {
   ): Promise<UserEntity> {
     const [updatedUsername] = await this.db
       .update(Users)
-      .set({ username: data.username }) // , updated_at: new Date()
+      .set({ username: data.username, updated_at: new Date() })
       .where(eq(Users.id, id))
       .returning();
 

@@ -30,7 +30,7 @@ export abstract class ApplicationExceptionFilter implements ExceptionFilter {
       this.loggerService.error({
         timestamp: new Date(),
         message: `An exception has ocurred: ${message}`,
-        context,
+        context: context ?? '',
         request_id: requestId,
         trace_id: traceId,
         method: request.method,

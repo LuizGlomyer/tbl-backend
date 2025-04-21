@@ -52,7 +52,7 @@ export class GamesRepository {
       .innerJoin(Media, eq(Games.mediaId, Media.id));
   }
 
-  async findById(id: number): Promise<MediaWithGames> {
+  async findById(id: number): Promise<MediaWithGames | undefined> {
     const [game] = await this.db
       .select()
       .from(Games)

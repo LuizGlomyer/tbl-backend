@@ -31,7 +31,7 @@ export class UserService {
 
     data.password = await argon2.hash(data.password);
     const newUser = await this.userRepository.create(data);
-    return new UserResponseDto(newUser);
+    return UserResponseDto.from(newUser);
   }
 
   async findAll() {
@@ -41,12 +41,12 @@ export class UserService {
 
   async findById(id: number) {
     const user = await this.userRepository.findById(id);
-    return new UserResponseDto(user);
+    return UserResponseDto.from(user);
   }
 
   async findByIdOrThrow(id: number) {
     const user = await this.findById(id);
-    if (!user.id) throw new NotFoundException();
+    if (!user?.id) throw new NotFoundException();
     return user;
   }
 
@@ -54,7 +54,7 @@ export class UserService {
     this.validateUsername(data.username);
 
     const userToUpdate = await this.userRepository.findById(id);
-    if (!userToUpdate) throw new NotFoundException('This user does not exist');
+    if (!userToUpdate) throw new NotFoundException();
 
     const usernameAlreadyExists = await this.userRepository.findByUsername(
       data.username,
@@ -62,13 +62,13 @@ export class UserService {
     if (usernameAlreadyExists) throw new AlreadyExistsException('username');
 
     const updatedUser = await this.userRepository.updateUsernameById(id, data);
-    return new UserResponseDto(updatedUser);
+    return UserResponseDto.from(updatedUser);
   }
 
   async deleteById(id: number) {
     const userToDelete = await this.findByIdOrThrow(id);
     const deletedUser = await this.userRepository.deleteById(userToDelete.id);
-    return new UserResponseDto(deletedUser);
+    return UserResponseDto.from(deletedUser);
   }
 
   validateUsername(username: string) {

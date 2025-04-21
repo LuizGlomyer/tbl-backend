@@ -6,8 +6,10 @@ import { MediaEntity } from '../../../db/schema/entities';
 export class MediaService {
   constructor(private mediaRepository: MediaRepository) {}
 
-  async findById(id: number): Promise<MediaEntity> {
-    return this.mediaRepository.findById(id);
+  async findByIdOrThrow(id: number): Promise<MediaEntity> {
+    const media = await this.mediaRepository.findById(id);
+    if (!media) throw new NotFoundException();
+    return media;
   }
 
   async deleteById(id: number): Promise<MediaEntity> {

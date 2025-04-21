@@ -24,7 +24,7 @@ export class GamesService {
     return this.gamesRepository.findAll();
   }
 
-  async findById(id: number): Promise<MediaWithGames> {
+  async findById(id: number): Promise<MediaWithGames | undefined> {
     const game = await this.gamesRepository.findById(id);
     return game;
   }

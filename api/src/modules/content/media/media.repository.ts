@@ -34,7 +34,7 @@ export class MediaRepository {
     return updatedMedia;
   }
 
-  async findById(id: number): Promise<MediaEntity> {
+  async findById(id: number): Promise<MediaEntity | undefined> {
     return this.db.query.Media.findFirst({
       where: eq(Media.id, id),
     });
