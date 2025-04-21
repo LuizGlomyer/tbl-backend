@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { RequestCreatePlatformDTO } from './dto/create-platform.dto';
+import { RequestCreatePlatformDTO } from '../../../common/dto/create-platform.dto';
 import { PlatformsService } from './platforms.service';
 
 @Controller('platforms')
@@ -26,11 +26,11 @@ export class PlatformsController {
 
   @Get(':id')
   async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.platformsService.findById(id);
+    return this.platformsService.findByIdOrThrow(id);
   }
 
   @Put(':id')
-  async updatePlatformById(
+  async updateById(
     @Param('id', ParseIntPipe) platformId: number,
     @Body() data: RequestCreatePlatformDTO,
   ) {

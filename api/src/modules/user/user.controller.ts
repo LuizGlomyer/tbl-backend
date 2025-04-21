@@ -8,9 +8,9 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateUserDTO } from './dto/create-user.dto';
+import { CreateUserDTO } from '../../common/dto/user/create-user.dto';
 import { UserService } from './user.service';
-import { UpdateUsenameDTO } from './dto/update-username.dto';
+import { UpdateUsenameDTO } from '../../common/dto/user/update-username.dto';
 
 @Controller('users')
 export class UserController {
@@ -28,7 +28,7 @@ export class UserController {
 
   @Get(':id')
   async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.findById(id);
+    return this.userService.findByIdOrThrow(id);
   }
 
   @Patch(':id')

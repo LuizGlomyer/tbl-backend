@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { GamesService } from '../games.service';
-import { GamesRepository } from '../games.repository';
+import { GamesService } from './games.service';
+import { GamesRepository } from './games.repository';
 import {
   GamesRepositoryMock,
-  mockMetroid,
-  requestMetroid,
-} from './games.mocks';
+  mockDeathStranding,
+  requestDeathStranding,
+} from '../../../../test/mocks/games.mocks';
+import { PlatformsRepository } from '../platforms/platforms.repository';
+import { NON_EXISTING_ID } from '../../../../test/test.utils';
 import {
-  mockVirtualBoy,
+  mockPlaystation4,
   PlatformsRepositoryMock,
-} from '../../platforms/tests/platforms.mocks';
-import { PlatformsRepository } from '../../platforms/platforms.repository';
-import { NON_EXISTING_ID } from '../../../../../test/test.utils';
+} from '../../../../test/mocks/platforms.mocks';
 
 describe('GamesService', () => {
   let service: GamesService;
@@ -36,47 +36,55 @@ describe('GamesService', () => {
 
   describe('creating a new game', () => {
     test('create a valid game', async () => {
-      jest.spyOn(gamesRepository, 'create').mockResolvedValue(mockMetroid);
+      jest
+        .spyOn(gamesRepository, 'create')
+        .mockResolvedValue(mockDeathStranding);
       jest
         .spyOn(platformsRepository, 'findById')
-        .mockResolvedValue(mockVirtualBoy);
+        .mockResolvedValue(mockPlaystation4);
 
-      const newGame = await service.create(requestMetroid);
+      const newGame = await service.create(requestDeathStranding);
 
-      expect(newGame).toEqual(mockMetroid);
+      expect(newGame).toEqual(mockDeathStranding);
       expect(gamesRepository.create).toHaveBeenCalledTimes(1);
-      expect(gamesRepository.create).toHaveBeenCalledWith(requestMetroid);
+      expect(gamesRepository.create).toHaveBeenCalledWith(
+        requestDeathStranding,
+      );
     });
 
     test('create a game with an non existing platform', async () => {
       jest.spyOn(platformsRepository, 'findById').mockResolvedValue(undefined);
 
-      await expect(service.create(requestMetroid)).rejects.toThrow(
+      await expect(service.create(requestDeathStranding)).rejects.toThrow(
         BadRequestException,
       );
 
       expect(platformsRepository.findById).toHaveBeenCalledTimes(1);
       expect(platformsRepository.findById).toHaveBeenCalledWith(
-        requestMetroid.games.platformId,
+        requestDeathStranding.games.platformId,
       );
       expect(gamesRepository.create).toHaveBeenCalledTimes(0);
     });
   });
 
   describe('finding games', () => {
-    test('find a game by ID', async () => {
-      jest.spyOn(gamesRepository, 'findById').mockResolvedValue(mockMetroid);
+    test('find a game by id', async () => {
+      jest
+        .spyOn(gamesRepository, 'findById')
+        .mockResolvedValue(mockDeathStranding);
 
-      const gameFound = await service.findById(mockMetroid.games.id);
+      const gameFound = await service.findByIdOrThrow(
+        mockDeathStranding.games.id,
+      );
 
-      expect(gameFound).toEqual(mockMetroid);
+      expect(gameFound).toEqual(mockDeathStranding);
       expect(gamesRepository.findById).toHaveBeenCalledTimes(1);
       expect(gamesRepository.findById).toHaveBeenCalledWith(
-        mockMetroid.games.id,
+        mockDeathStranding.games.id,
       );
     });
 
-    test('find a non existing game by ID', async () => {
+    test('find a non existing game by id', async () => {
       jest.spyOn(gamesRepository, 'findById').mockResolvedValue(undefined);
       await expect(service.findByIdOrThrow(NON_EXISTING_ID)).rejects.toThrow(
         NotFoundException,
@@ -85,7 +93,7 @@ describe('GamesService', () => {
     });
 
     test('find all games', async () => {
-      const mockedGames = [mockMetroid];
+      const mockedGames = [mockDeathStranding];
       jest.spyOn(gamesRepository, 'findAll').mockResolvedValue(mockedGames);
       const allGames = await service.findAll();
 
@@ -94,32 +102,36 @@ describe('GamesService', () => {
     });
   });
 
-  describe('update a game', () => {
+  describe('updating games', () => {
     test('update a valid game by id', async () => {
-      jest.spyOn(gamesRepository, 'updateById').mockResolvedValue(mockMetroid);
-      jest.spyOn(gamesRepository, 'findById').mockResolvedValue(mockMetroid);
+      jest
+        .spyOn(gamesRepository, 'updateById')
+        .mockResolvedValue(mockDeathStranding);
+      jest
+        .spyOn(gamesRepository, 'findById')
+        .mockResolvedValue(mockDeathStranding);
       jest
         .spyOn(platformsRepository, 'findById')
-        .mockResolvedValue(mockVirtualBoy);
+        .mockResolvedValue(mockPlaystation4);
       const updatedPlatform = await service.updateById(
-        mockMetroid.games.id,
-        requestMetroid,
+        mockDeathStranding.games.id,
+        requestDeathStranding,
       );
 
-      expect(updatedPlatform).toEqual(mockMetroid);
+      expect(updatedPlatform).toEqual(mockDeathStranding);
       expect(platformsRepository.findById).toHaveBeenCalledTimes(1);
       expect(platformsRepository.findById).toHaveBeenCalledWith(
-        requestMetroid.games.platformId,
+        requestDeathStranding.games.platformId,
       );
       expect(gamesRepository.findById).toHaveBeenCalledTimes(1);
       expect(gamesRepository.findById).toHaveBeenCalledWith(
-        mockMetroid.games.id,
+        mockDeathStranding.games.id,
       );
       expect(gamesRepository.updateById).toHaveBeenCalledTimes(1);
       expect(gamesRepository.updateById).toHaveBeenCalledWith(
-        mockMetroid.games.id,
-        mockMetroid.media.id,
-        requestMetroid,
+        mockDeathStranding.games.id,
+        mockDeathStranding.media.id,
+        requestDeathStranding,
       );
     });
 
@@ -127,18 +139,20 @@ describe('GamesService', () => {
       jest.spyOn(gamesRepository, 'updateById');
       jest.spyOn(gamesRepository, 'findById').mockResolvedValue(undefined);
       await expect(
-        service.updateById(NON_EXISTING_ID, requestMetroid),
+        service.updateById(NON_EXISTING_ID, requestDeathStranding),
       ).rejects.toThrow(NotFoundException);
       expect(gamesRepository.findById).toHaveBeenCalledTimes(1);
       expect(gamesRepository.updateById).toHaveBeenCalledTimes(0);
     });
 
     test('update with a non existing platform', async () => {
-      jest.spyOn(gamesRepository, 'findById').mockResolvedValue(mockMetroid);
+      jest
+        .spyOn(gamesRepository, 'findById')
+        .mockResolvedValue(mockDeathStranding);
       jest.spyOn(platformsRepository, 'findById').mockResolvedValue(undefined);
 
       await expect(
-        service.updateById(NON_EXISTING_ID, requestMetroid),
+        service.updateById(NON_EXISTING_ID, requestDeathStranding),
       ).rejects.toThrow(BadRequestException);
 
       expect(gamesRepository.findById).toHaveBeenCalledTimes(1);

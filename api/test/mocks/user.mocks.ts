@@ -1,5 +1,5 @@
-import { UserEntity } from '../../../db/schema/entities';
-import { UserRepository } from '../user.repository';
+import { UserEntity } from '../../src/db/schema/entities';
+import { UserRepository } from '../../src/modules/user/user.repository';
 
 export const UserRepositoryMock: {
   provide: typeof UserRepository;

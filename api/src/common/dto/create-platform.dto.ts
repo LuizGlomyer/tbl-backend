@@ -1,6 +1,6 @@
 import { IsString, MaxLength, ValidateNested } from 'class-validator';
-import { NAME_MAX_LENGTH } from '../../../../db/helpers';
-import { CreateMediaDTO } from '../../media/dto/create-media.dto';
+import { NAME_MAX_LENGTH } from '../../db/helpers';
+import { CreateMediaDTO } from './create-media.dto';
 import { Type } from 'class-transformer';
 
 export class CreatePlatformDTO {
@@ -9,7 +9,7 @@ export class CreatePlatformDTO {
   manufacturer: string;
 }
 
-export class InsertPlatformDTO {
+export class InsertPlatformDTO extends CreatePlatformDTO {
   mediaId: number;
 }
 

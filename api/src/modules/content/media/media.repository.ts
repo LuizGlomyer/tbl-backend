@@ -3,7 +3,7 @@ import { DrizzleService } from '../../drizzle/drizzle.service';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DatabaseType } from '../../../db/schema/schema';
 import { Media } from '../../../db/schema/tables/content/media';
-import { CreateMediaDTO } from './dto/create-media.dto';
+import { CreateMediaDTO } from '../../../common/dto/create-media.dto';
 import { MediaEntity } from '../../../db/schema/entities';
 import { eq } from 'drizzle-orm';
 

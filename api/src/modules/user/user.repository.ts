@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDTO } from './dto/create-user.dto';
+import { CreateUserDTO } from '../../common/dto/user/create-user.dto';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { Users } from '../../db/schema/tables/users';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
-import { UpdateUsenameDTO } from './dto/update-username.dto';
+import { UpdateUsenameDTO } from '../../common/dto/user/update-username.dto';
 import { DatabaseType } from '../../db/schema/schema';
 import { UserEntity } from '../../db/schema/entities';
 

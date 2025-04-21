@@ -3,12 +3,15 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDTO, MIN_USERNAME_LENGTH } from './dto/create-user.dto';
+import {
+  CreateUserDTO,
+  MIN_USERNAME_LENGTH,
+} from '../../common/dto/user/create-user.dto';
 import { UserRepository } from './user.repository';
 import * as argon2 from 'argon2';
-import { UpdateUsenameDTO } from './dto/update-username.dto';
+import { UpdateUsenameDTO } from '../../common/dto/user/update-username.dto';
 import { AlreadyExistsException } from '../../common/exceptions/already-exists.exception';
-import { UserResponseDto } from './dto/user-response.dto';
+import { UserResponseDto } from '../../common/dto/user/user-response.dto';
 import { USERS_MAX_LENGTH_USERNAME } from '../../db/schema/tables/users';
 
 @Injectable()
@@ -37,8 +40,14 @@ export class UserService {
   }
 
   async findById(id: number) {
-    const foundUser = await this.userRepository.findById(id);
-    return new UserResponseDto(foundUser);
+    const user = await this.userRepository.findById(id);
+    return new UserResponseDto(user);
+  }
+
+  async findByIdOrThrow(id: number) {
+    const user = await this.findById(id);
+    if (!user.id) throw new NotFoundException();
+    return user;
   }
 
   async updateUsernameById(id: number, data: UpdateUsenameDTO) {
@@ -57,9 +66,8 @@ export class UserService {
   }
 
   async deleteById(id: number) {
-    const userToDelete = await this.findById(id);
-    if (!userToDelete.id) throw new NotFoundException();
-    const deletedUser = await this.userRepository.deleteById(id);
+    const userToDelete = await this.findByIdOrThrow(id);
+    const deletedUser = await this.userRepository.deleteById(userToDelete.id);
     return new UserResponseDto(deletedUser);
   }
 

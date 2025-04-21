@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { GamesService } from './games.service';
-import { RequestCreateGameDTO } from './dto/create-game.dto';
+import { RequestCreateGameDTO } from '../../../common/dto/create-game.dto';
 
 @Controller('games')
 export class GamesController {

@@ -6,7 +6,7 @@ import {
   RequestCreatePlatformDTO,
   InsertPlatformDTO,
   CreatePlatformDTO,
-} from './dto/create-platform.dto';
+} from '../../../common/dto/create-platform.dto';
 import { Platforms } from '../../../db/schema/tables/content/platforms';
 import { MediaRepository } from '../media/media.repository';
 import { MediaEntity, PlatformsEntity } from '../../../db/schema/entities';
@@ -78,7 +78,7 @@ export class PlatformsRepository {
     return updatedPlatform;
   }
 
-  async updatePlatformById(
+  async updateById(
     platformId: number,
     mediaId: number,
     data: RequestCreatePlatformDTO,

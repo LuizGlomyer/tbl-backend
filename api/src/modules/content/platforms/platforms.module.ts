@@ -6,8 +6,8 @@ import { DrizzleModule } from '../../drizzle/drizzle.module';
 import { MediaModule } from '../media/media.module';
 
 @Module({
-  providers: [PlatformsService, PlatformsRepository],
   controllers: [PlatformsController],
+  providers: [PlatformsService, PlatformsRepository],
   imports: [DrizzleModule, MediaModule],
   exports: [PlatformsService],
 })
