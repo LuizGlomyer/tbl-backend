@@ -5,10 +5,11 @@ import { GamesController } from './games.controller';
 import { DrizzleModule } from '../../drizzle/drizzle.module';
 import { MediaModule } from '../media/media.module';
 import { PlatformsRepository } from '../platforms/platforms.repository';
+import { MediaService } from '../media/media.service';
 
 @Module({
   controllers: [GamesController],
-  providers: [GamesService, GamesRepository, PlatformsRepository],
+  providers: [GamesService, MediaService, GamesRepository, PlatformsRepository],
   imports: [DrizzleModule, MediaModule],
   exports: [GamesService],
 })

@@ -1,4 +1,4 @@
-import { MediaWithPlatform } from '../../src/common/types/media.type';
+import { MediaWithPlatform } from '../../src/common/types/media.types';
 import {
   CreatePlatformDTO,
   RequestCreatePlatformDTO,
@@ -20,6 +20,7 @@ export const PlatformsRepositoryMock: {
     createWithTransaction: jest.fn(),
     updateWithTransaction: jest.fn(),
     updateById: jest.fn(),
+    gamesPlatformCount: jest.fn(),
   },
 };
 

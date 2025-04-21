@@ -4,7 +4,7 @@ import {
   InsertGameDTO,
   RequestCreateGameDTO,
 } from '../../../common/dto/create-game.dto';
-import { MediaWithGames } from '../../../common/types/media.type';
+import { MediaWithGames } from '../../../common/types/media.types';
 import { MediaRepository } from '../media/media.repository';
 import { DrizzleService } from '../../drizzle/drizzle.service';
 import { DatabaseType } from '../../../db/schema/schema';

@@ -13,9 +13,11 @@ import {
 } from '../../../db/schema/tables/content/platforms';
 import { MediaRepository } from '../media/media.repository';
 import { MediaEntity, PlatformsEntity } from '../../../db/schema/entities';
-import { MediaWithPlatform } from '../../../common/types/media.type';
+import { MediaWithPlatform } from '../../../common/types/media.types';
 import { Media } from '../../../db/schema/tables/content/media';
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
+import { Games } from '../../../db/schema/tables/content/games';
+import { CountResult } from '../../../common/types/drizzle.types';
 
 @Injectable()
 export class PlatformsRepository {
@@ -106,5 +108,14 @@ export class PlatformsRepository {
     });
 
     return result;
+  }
+
+  async gamesPlatformCount(platformId: number): Promise<number> {
+    const [gamesUsingPlatform]: CountResult = await this.db
+      .select({ count: count() })
+      .from(Games)
+      .where(eq(Games.platformId, platformId));
+
+    return gamesUsingPlatform.count;
   }
 }

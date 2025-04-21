@@ -1,11 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PlatformsRepository } from './platforms.repository';
 import { RequestCreatePlatformDTO } from '../../../common/dto/create-platform.dto';
-import { MediaWithPlatform } from '../../../common/types/media.type';
+import { MediaWithPlatform } from '../../../common/types/media.types';
+import { MediaService } from '../media/media.service';
 
 @Injectable()
 export class PlatformsService {
-  constructor(private platformsRepository: PlatformsRepository) {}
+  constructor(
+    private mediaService: MediaService,
+    private platformsRepository: PlatformsRepository,
+  ) {}
 
   async create(data: RequestCreatePlatformDTO): Promise<MediaWithPlatform> {
     return this.platformsRepository.create(data);
@@ -26,13 +34,27 @@ export class PlatformsService {
     return platform;
   }
 
-  async updatePlatformById(platformId: number, data: RequestCreatePlatformDTO) {
-    const platformToUpdate = await this.findByIdOrThrow(platformId);
+  async updatePlatformById(id: number, data: RequestCreatePlatformDTO) {
+    const platformToUpdate = await this.findByIdOrThrow(id);
     const updatedPlatform = await this.platformsRepository.updateById(
       platformToUpdate.platforms.id,
       platformToUpdate.media.id,
       data,
     );
     return updatedPlatform;
+  }
+
+  async deleteById(id: number): Promise<MediaWithPlatform> {
+    const platformToDelete = await this.findByIdOrThrow(id);
+    const platformUseCount = await this.platformsRepository.gamesPlatformCount(id);
+    console.log({ platformUseCount });
+
+    if (platformUseCount >= 1)
+      throw new ConflictException(
+        `The platform with id ${id} is used in one or more places`,
+      );
+
+    await this.mediaService.deleteById(platformToDelete.media.id);
+    return platformToDelete;
   }
 }

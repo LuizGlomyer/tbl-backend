@@ -1,5 +1,17 @@
 import { MediaEntity } from '../../src/db/schema/entities';
 import { MediaRepository } from '../../src/modules/content/media/media.repository';
+import { MediaService } from '../../src/modules/content/media/media.service';
+
+export const MediaServiceMock: {
+  provide: typeof MediaService;
+  useValue: Partial<MediaService>;
+} = {
+  provide: MediaService,
+  useValue: {
+    findByIdOrThrow: jest.fn(),
+    deleteById: jest.fn(),
+  },
+};
 
 export const MediaRepositoryMock: {
   provide: typeof MediaRepository;
@@ -14,7 +26,7 @@ export const MediaRepositoryMock: {
   },
 };
 
-export const genericMedia: MediaEntity = {
+export const genericMediaMock: MediaEntity = {
   id: 1,
   name: 'Media',
   type: 'test',

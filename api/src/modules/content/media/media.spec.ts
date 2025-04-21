@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MediaRepository } from './media.repository';
 import { MediaService } from './media.service';
 import {
-  genericMedia,
+  genericMediaMock,
   MediaRepositoryMock,
 } from '../../../../test/mocks/media.mocks';
 import { NON_EXISTING_ID } from '../../../../test/test.utils';
@@ -26,29 +26,45 @@ describe('MediaService', () => {
     jest.resetAllMocks();
   });
 
-  describe('deleting media', () => {
-    test('delete media by id', async () => {
-      jest.spyOn(mediaRepository, 'deleteById');
-      jest.spyOn(mediaRepository, 'findById').mockResolvedValue(genericMedia);
-      await service.deleteById(genericMedia.id);
+  describe('finding media', () => {
+    test('find media by id', async () => {
+      jest
+        .spyOn(mediaRepository, 'findById')
+        .mockResolvedValue(genericMediaMock);
 
+      const mediaFound = await service.findByIdOrThrow(genericMediaMock.id);
+
+      expect(mediaFound).toEqual(genericMediaMock);
       expect(mediaRepository.findById).toHaveBeenCalledTimes(1);
-      expect(mediaRepository.findById).toHaveBeenCalledWith(genericMedia.id);
-      expect(mediaRepository.deleteById).toHaveBeenCalledTimes(1);
-      expect(mediaRepository.deleteById).toHaveBeenCalledWith(genericMedia.id);
+      expect(mediaRepository.findById).toHaveBeenCalledWith(
+        genericMediaMock.id,
+      );
     });
 
-    test('delete a non existing media by id', async () => {
-      jest.spyOn(mediaRepository, 'deleteById');
+    test('find a non existing media by id', async () => {
       jest.spyOn(mediaRepository, 'findById').mockResolvedValue(undefined);
 
-      await expect(service.deleteById(NON_EXISTING_ID)).rejects.toThrow(
+      await expect(service.findByIdOrThrow(NON_EXISTING_ID)).rejects.toThrow(
         NotFoundException,
       );
 
       expect(mediaRepository.findById).toHaveBeenCalledTimes(1);
       expect(mediaRepository.findById).toHaveBeenCalledWith(NON_EXISTING_ID);
-      expect(mediaRepository.deleteById).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('deleting media', () => {
+    test('delete media by id', async () => {
+      jest
+        .spyOn(mediaRepository, 'findById')
+        .mockResolvedValue(genericMediaMock);
+
+      await service.deleteById(genericMediaMock.id);
+
+      expect(mediaRepository.deleteById).toHaveBeenCalledTimes(1);
+      expect(mediaRepository.deleteById).toHaveBeenCalledWith(
+        genericMediaMock.id,
+      );
     });
   });
 });

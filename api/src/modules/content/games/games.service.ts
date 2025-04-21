@@ -5,14 +5,16 @@ import {
 } from '@nestjs/common';
 import { GamesRepository } from './games.repository';
 import { RequestCreateGameDTO } from '../../../common/dto/create-game.dto';
-import { MediaWithGames } from '../../../common/types/media.type';
+import { MediaWithGames } from '../../../common/types/media.types';
 import { PlatformsRepository } from '../platforms/platforms.repository';
+import { MediaService } from '../media/media.service';
 
 @Injectable()
 export class GamesService {
   constructor(
     private gamesRepository: GamesRepository,
     private platformsRepository: PlatformsRepository,
+    private mediaService: MediaService,
   ) {}
 
   async create(data: RequestCreateGameDTO): Promise<MediaWithGames> {
@@ -44,6 +46,12 @@ export class GamesService {
       data,
     );
     return updatedGame;
+  }
+
+  async deleteById(id: number): Promise<MediaWithGames> {
+    const gameToDelete = await this.findByIdOrThrow(id);
+    await this.mediaService.deleteById(gameToDelete.media.id);
+    return gameToDelete;
   }
 
   async validatePlatform(platformId: number): Promise<void> {

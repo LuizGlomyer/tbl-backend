@@ -14,18 +14,27 @@ import {
   mockPlaystation4,
   PlatformsRepositoryMock,
 } from '../../../../test/mocks/platforms.mocks';
+import { MediaService } from '../media/media.service';
+import { MediaServiceMock } from '../../../../test/mocks/media.mocks';
 
 describe('GamesService', () => {
   let service: GamesService;
+  let mediaService: MediaService;
   let gamesRepository: GamesRepository;
   let platformsRepository: PlatformsRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GamesService, GamesRepositoryMock, PlatformsRepositoryMock],
+      providers: [
+        GamesService,
+        MediaServiceMock,
+        GamesRepositoryMock,
+        PlatformsRepositoryMock,
+      ],
     }).compile();
 
     service = module.get<GamesService>(GamesService);
+    mediaService = module.get<MediaService>(MediaService);
     gamesRepository = module.get<GamesRepository>(GamesRepository);
     platformsRepository = module.get<PlatformsRepository>(PlatformsRepository);
   });
@@ -90,6 +99,7 @@ describe('GamesService', () => {
         NotFoundException,
       );
       expect(gamesRepository.findById).toHaveBeenCalledTimes(1);
+      expect(gamesRepository.findById).toHaveBeenCalledWith(NON_EXISTING_ID);
     });
 
     test('find all games', async () => {
@@ -158,6 +168,38 @@ describe('GamesService', () => {
       expect(gamesRepository.findById).toHaveBeenCalledTimes(1);
       expect(gamesRepository.findById).toHaveBeenCalledWith(NON_EXISTING_ID);
       expect(gamesRepository.updateById).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('deleting games', () => {
+    test('delete game by id', async () => {
+      jest
+        .spyOn(gamesRepository, 'findById')
+        .mockResolvedValue(mockDeathStranding);
+      jest.spyOn(mediaService, 'deleteById');
+
+      await service.deleteById(mockDeathStranding.games.id);
+
+      expect(gamesRepository.findById).toHaveBeenCalledTimes(1);
+      expect(gamesRepository.findById).toHaveBeenCalledWith(
+        mockDeathStranding.games.id,
+      );
+      expect(mediaService.deleteById).toHaveBeenCalledTimes(1);
+      expect(mediaService.deleteById).toHaveBeenCalledWith(
+        mockDeathStranding.media.id,
+      );
+    });
+
+    test('delete a non existing game by id', async () => {
+      jest.spyOn(gamesRepository, 'findById').mockResolvedValue(undefined);
+
+      await expect(service.deleteById(NON_EXISTING_ID)).rejects.toThrow(
+        NotFoundException,
+      );
+
+      expect(gamesRepository.findById).toHaveBeenCalledTimes(1);
+      expect(gamesRepository.findById).toHaveBeenCalledWith(NON_EXISTING_ID);
+      expect(mediaService.deleteById).toHaveBeenCalledTimes(0);
     });
   });
 });

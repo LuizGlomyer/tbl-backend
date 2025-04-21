@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -35,5 +36,10 @@ export class PlatformsController {
     @Body() data: RequestCreatePlatformDTO,
   ) {
     return this.platformsService.updatePlatformById(platformId, data);
+  }
+
+  @Delete(':id')
+  async deleteById(@Param('id', ParseIntPipe) id: number) {
+    return this.platformsService.deleteById(id);
   }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -35,5 +36,10 @@ export class GamesController {
     @Body() data: RequestCreateGameDTO,
   ) {
     return this.gamesService.updateById(gameId, data);
+  }
+
+  @Delete(':id')
+  async deleteById(@Param('id', ParseIntPipe) id: number) {
+    return this.gamesService.deleteById(id);
   }
 }
