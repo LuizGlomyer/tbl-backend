@@ -6,7 +6,7 @@ import { DatabaseError } from 'pg';
 export class DatabaseExceptionsFilter extends ApplicationExceptionFilter {
   handleException(exception: DatabaseError) {
     const statusCode = 500;
-    const message = exception.detail;
+    const message = `${exception.severity}. Couldn't process the request, try again later`;
     const error = 'Database Error';
     const context: string = 'DatabaseExceptionsFilter';
     const hasToLog: boolean = true;
