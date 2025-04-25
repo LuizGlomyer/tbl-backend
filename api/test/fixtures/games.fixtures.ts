@@ -16,8 +16,11 @@ const mediaDeathStranding: CreateMediaDTO = {
   name: 'Death Stranding',
   acronym: 'DS',
   description: 'A Hideo Kojima game',
-  imageCoverUrl: 'ds.jpg',
-  imageUrls: ['1.jpg', '2.jpg'],
+  imageCoverUrl: 'https://files.catbox.moe/mlbqd6.jpg',
+  imageUrls: [
+    'https://files.catbox.moe/64329m.avif',
+    'https://files.catbox.moe/5spgmr.avif',
+  ],
 };
 
 export const requestDeathStranding: RequestCreateGameDTO = {
@@ -44,4 +47,20 @@ const entityGamesDeathStranding: GamesEntity = {
 export const mockDeathStranding: MediaWithGames = {
   media: entityMediaDeathStranding,
   games: entityGamesDeathStranding,
+};
+
+export const requestSmashBrosUltimate: RequestCreateGameDTO = {
+  games: {
+    platformId: 1,
+  },
+  media: {
+    name: 'Super Smash Bros. Ultimate',
+    acronym: 'SMBU',
+    description: 'Everyone is here!',
+    imageCoverUrl: 'https://files.catbox.moe/gzxdex.jpg',
+    imageUrls: [
+      'https://files.catbox.moe/31jti8.webp',
+      'https://files.catbox.moe/u16xhi.webp',
+    ],
+  },
 };

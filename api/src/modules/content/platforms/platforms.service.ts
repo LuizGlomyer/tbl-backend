@@ -46,8 +46,8 @@ export class PlatformsService {
 
   async deleteById(id: number): Promise<MediaWithPlatform> {
     const platformToDelete = await this.findByIdOrThrow(id);
-    const platformUseCount = await this.platformsRepository.gamesPlatformCount(id);
-    console.log({ platformUseCount });
+    const platformUseCount =
+      await this.platformsRepository.gamesPlatformCount(id);
 
     if (platformUseCount >= 1)
       throw new ConflictException(

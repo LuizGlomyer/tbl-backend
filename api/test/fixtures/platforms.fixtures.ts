@@ -15,8 +15,11 @@ const mediaPlaystation4: CreateMediaDTO = {
   name: 'Playstation 4',
   acronym: 'PS4',
   description: 'A console from Sony',
-  imageCoverUrl: 'ps4.jpg',
-  imageUrls: ['1.jpg', '2.jpg'],
+  imageCoverUrl: 'https://files.catbox.moe/udgcu0.webp',
+  imageUrls: [
+    'https://files.catbox.moe/xzmv6u.webp',
+    'https://files.catbox.moe/klryjo.jpg',
+  ],
 };
 
 export const requestPlaystation4: RequestCreatePlatformDTO = {
@@ -43,4 +46,20 @@ const entityGamesPlaystation: PlatformsEntity = {
 export const mockPlaystation4: MediaWithPlatform = {
   media: entityMediaPlaystation,
   platforms: entityGamesPlaystation,
+};
+
+export const requestNintendoSwitch: RequestCreatePlatformDTO = {
+  platforms: {
+    manufacturer: 'NVidia',
+  },
+  media: {
+    name: 'Nintendo Switch',
+    acronym: 'NS',
+    description: 'A console from Nintendo',
+    imageCoverUrl: 'https://files.catbox.moe/itgy9p.webp',
+    imageUrls: [
+      'https://files.catbox.moe/8ukrcp.webp',
+      'https://files.catbox.moe/oifvgk.webp',
+    ],
+  },
 };
