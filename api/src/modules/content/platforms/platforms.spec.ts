@@ -3,14 +3,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PlatformsService } from './platforms.service';
 import { PlatformsRepository } from './platforms.repository';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import {
-  mockPlaystation4,
-  PlatformsRepositoryMock,
-  requestPlaystation4,
-} from '../../../../test/mocks/platforms.mocks';
+import { PlatformsRepositoryMock } from '../../../../test/mocks/platforms.mocks';
 import { NON_EXISTING_ID } from '../../../../test/test.utils';
 import { MediaService } from '../media/media.service';
 import { MediaServiceMock } from '../../../../test/mocks/media.mocks';
+import {
+  mockPlaystation4,
+  requestPlaystation4,
+} from '../../../../test/fixtures/platforms.fixtures';
 
 describe('PlatformsService', () => {
   let service: PlatformsService;

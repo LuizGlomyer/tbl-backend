@@ -4,12 +4,12 @@ import { UserRepository } from './user.repository';
 import { UserResponseDto } from '../../common/dto/user/user-response.dto';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { USERS_MAX_LENGTH_USERNAME } from '../../db/schema/tables/users';
+import { UserRepositoryMock } from '../../../test/mocks/user.mocks';
+import { NON_EXISTING_ID } from '../../../test/test.utils';
 import {
   userMario,
-  UserRepositoryMock,
   userSolidSnake,
-} from '../../../test/mocks/user.mocks';
-import { NON_EXISTING_ID } from '../../../test/test.utils';
+} from '../../../test/fixtures/user.fixtures';
 
 jest.mock('argon2', () => ({
   hash: () => 'hashed_password',

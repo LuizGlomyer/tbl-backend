@@ -3,19 +3,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { GamesService } from './games.service';
 import { GamesRepository } from './games.repository';
-import {
-  GamesRepositoryMock,
-  mockDeathStranding,
-  requestDeathStranding,
-} from '../../../../test/mocks/games.mocks';
+import { GamesRepositoryMock } from '../../../../test/mocks/games.mocks';
 import { PlatformsRepository } from '../platforms/platforms.repository';
 import { NON_EXISTING_ID } from '../../../../test/test.utils';
-import {
-  mockPlaystation4,
-  PlatformsRepositoryMock,
-} from '../../../../test/mocks/platforms.mocks';
+import { PlatformsRepositoryMock } from '../../../../test/mocks/platforms.mocks';
 import { MediaService } from '../media/media.service';
 import { MediaServiceMock } from '../../../../test/mocks/media.mocks';
+import {
+  mockDeathStranding,
+  requestDeathStranding,
+} from '../../../../test/fixtures/games.fixtures';
+import { mockPlaystation4 } from '../../../../test/fixtures/platforms.fixtures';
 
 describe('GamesService', () => {
   let service: GamesService;

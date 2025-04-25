@@ -2,12 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { MediaRepository } from './media.repository';
 import { MediaService } from './media.service';
-import {
-  genericMediaMock,
-  MediaRepositoryMock,
-} from '../../../../test/mocks/media.mocks';
+import { MediaRepositoryMock } from '../../../../test/mocks/media.mocks';
 import { NON_EXISTING_ID } from '../../../../test/test.utils';
 import { NotFoundException } from '@nestjs/common';
+import { genericMediaMock } from '../../../../test/fixtures/media.fixtures';
 
 describe('MediaService', () => {
   let service: MediaService;
