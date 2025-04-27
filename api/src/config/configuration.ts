@@ -1,3 +1,5 @@
 export default () => ({
-  DB_URL: `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`,
+  DB_NAME: process.env.USE_TEST_DB
+    ? process.env.TEST_DB_NAME
+    : process.env.DB_DATABASE,
 });

@@ -17,11 +17,14 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "USE_TEST_DB=true jest --config ./test/jest-e2e.json",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
+    "push": "drizzle-kit push",
+    "push:test": "USE_TEST_DB=true drizzle-kit push",
     "studio": "drizzle-kit studio",
-    "seed": "ts-node src/db/seeds/seed.ts"
+    "seed": "ts-node src/db/seeds/seed.ts",
+    "seed:test": "USE_TEST_DB=true ts-node src/db/seeds/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
