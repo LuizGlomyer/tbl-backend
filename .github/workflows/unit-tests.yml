@@ -1,0 +1,30 @@
+name: Run integration testing
+
+on:
+  push:
+    branches: [main, ci]
+  pull_request:
+    branches: [main, ci]
+
+env:
+  NODE_VERSION: 22.13.0
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'pnpm'
+
+    - name: Install Dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Unit testing
+      run: pnpm run test
