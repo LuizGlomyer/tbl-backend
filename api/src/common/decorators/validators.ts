@@ -1,7 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { IsInt, Max, Min, ValidationOptions } from 'class-validator';
-
-const MAX_POSITIVE_INT = 2_147_483_647;
+import { MAX_POSITIVE_INT } from '../constants/validator.constants';
 
 export function IsSafeIntId(
   min = 1,

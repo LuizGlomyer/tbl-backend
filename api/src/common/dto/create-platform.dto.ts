@@ -1,7 +1,7 @@
 import { IsString, MaxLength, ValidateNested } from 'class-validator';
-import { NAME_MAX_LENGTH } from '../../db/helpers';
 import { CreateMediaDTO } from './create-media.dto';
 import { Type } from 'class-transformer';
+import { NAME_MAX_LENGTH } from '../constants/database.constants';
 
 export class CreatePlatformDTO {
   @IsString()

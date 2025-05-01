@@ -1,6 +1,7 @@
 import { integer, pgTable, varchar } from 'drizzle-orm/pg-core';
-import { GENERIC_MAX_LENGTH, timestamps } from '../../../helpers';
+import { timestamps } from '../../../helpers';
 import { Media } from './media';
+import { GENERIC_MAX_LENGTH } from '../../../../common/constants/database.constants';
 
 export const TABLE_PLATFORMS = 'platforms';
 

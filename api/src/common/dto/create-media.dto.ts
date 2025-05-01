@@ -1,5 +1,8 @@
 import { IsArray, IsString, MaxLength } from 'class-validator';
-import { GENERIC_MAX_LENGTH, NAME_MAX_LENGTH } from '../../db/helpers';
+import {
+  GENERIC_MAX_LENGTH,
+  NAME_MAX_LENGTH,
+} from '../constants/database.constants';
 
 export class CreateMediaDTO {
   @IsString()

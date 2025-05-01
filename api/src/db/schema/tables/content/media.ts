@@ -1,9 +1,9 @@
 import { integer, json, pgTable, text, varchar } from 'drizzle-orm/pg-core';
+import { timestamps } from '../../../helpers';
 import {
   GENERIC_MAX_LENGTH,
   NAME_MAX_LENGTH,
-  timestamps,
-} from '../../../helpers';
+} from '../../../../common/constants/database.constants';
 
 export const TABLE_MEDIA = 'media';
 
