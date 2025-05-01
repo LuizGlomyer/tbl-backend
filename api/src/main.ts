@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionsFilter } from './common/filters/http-exceptions.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { DatabaseExceptionsFilter } from './common/filters/database-exceptions.filter';
@@ -25,7 +25,11 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  await app.listen(process.env.PORT ?? 7777);
+
+  const port = process.env.PORT || 7777;
+  const host = process.env.HOST || 'localhost';
+  await app.listen(port);
+  Logger.debug(`🚀 API running at: http://${host}:${port}`, 'Bootstrap');
 }
 
 bootstrap();

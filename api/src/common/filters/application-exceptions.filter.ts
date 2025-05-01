@@ -1,4 +1,4 @@
-import { ExceptionFilter, ArgumentsHost } from '@nestjs/common';
+import { ExceptionFilter, ArgumentsHost, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LoggerService } from '../../modules/logger/logger.service';
 
@@ -26,7 +26,7 @@ export abstract class ApplicationExceptionFilter implements ExceptionFilter {
       this.handleException(exception);
 
     if (hasToLog) {
-      console.error(exception);
+      Logger.error(exception);
       this.loggerService.error({
         timestamp: new Date(),
         message: `An exception has ocurred: ${message}`,
