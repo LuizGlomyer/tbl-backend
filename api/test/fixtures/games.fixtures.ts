@@ -6,8 +6,9 @@ import { CreateMediaDTO } from '../../src/common/dto/create-media.dto';
 import { MediaWithGames } from '../../src/common/types/media.types';
 import { GamesEntity, MediaEntity } from '../../src/db/schema/entities';
 import { TABLE_GAMES } from '../../src/db/schema/tables/content/games';
-import { mockPlaystation4 } from './platforms.fixtures';
+import { mockNintendoSwitch, mockPlaystation4 } from './platforms.fixtures';
 
+//#region Death Stranding
 const gameDeathStranding: CreateGameDTO = {
   platformId: mockPlaystation4.platforms.id,
 };
@@ -30,7 +31,7 @@ export const requestDeathStranding: RequestCreateGameDTO = {
 
 const entityMediaDeathStranding: MediaEntity = {
   ...mediaDeathStranding,
-  id: 8,
+  id: 3,
   type: TABLE_GAMES,
   updated_at: null,
   created_at: new Date(),
@@ -38,7 +39,7 @@ const entityMediaDeathStranding: MediaEntity = {
 
 const entityGamesDeathStranding: GamesEntity = {
   ...gameDeathStranding,
-  id: 9,
+  id: 1,
   mediaId: entityMediaDeathStranding.id,
   updated_at: null,
   created_at: new Date(),
@@ -48,19 +49,47 @@ export const mockDeathStranding: MediaWithGames = {
   media: entityMediaDeathStranding,
   games: entityGamesDeathStranding,
 };
+//#endregion
+
+//#region Smash Bros Ultimate
+const gameSmashBrosUltimate: CreateGameDTO = {
+  platformId: mockNintendoSwitch.platforms.id,
+};
+
+const mediaSmashBrosUltimate: CreateMediaDTO = {
+  name: 'Super Smash Bros. Ultimate',
+  acronym: 'SMBU',
+  description: 'Everyone is here!',
+  imageCoverUrl: 'https://files.catbox.moe/gzxdex.jpg',
+  imageUrls: [
+    'https://files.catbox.moe/31jti8.webp',
+    'https://files.catbox.moe/u16xhi.webp',
+  ],
+};
 
 export const requestSmashBrosUltimate: RequestCreateGameDTO = {
-  games: {
-    platformId: 1,
-  },
-  media: {
-    name: 'Super Smash Bros. Ultimate',
-    acronym: 'SMBU',
-    description: 'Everyone is here!',
-    imageCoverUrl: 'https://files.catbox.moe/gzxdex.jpg',
-    imageUrls: [
-      'https://files.catbox.moe/31jti8.webp',
-      'https://files.catbox.moe/u16xhi.webp',
-    ],
-  },
+  games: gameSmashBrosUltimate,
+  media: mediaSmashBrosUltimate,
 };
+
+const entityMediaSmashBrosUltimate: MediaEntity = {
+  ...mediaSmashBrosUltimate,
+  id: 4,
+  type: TABLE_GAMES,
+  updated_at: null,
+  created_at: new Date(),
+};
+
+const entityGamesSmashBrosUltimate: GamesEntity = {
+  ...gameSmashBrosUltimate,
+  id: 2,
+  mediaId: entityMediaSmashBrosUltimate.id,
+  updated_at: null,
+  created_at: new Date(),
+};
+
+export const mockSmashBrosUltimate: MediaWithGames = {
+  media: entityMediaSmashBrosUltimate,
+  games: entityGamesSmashBrosUltimate,
+};
+//#endregion

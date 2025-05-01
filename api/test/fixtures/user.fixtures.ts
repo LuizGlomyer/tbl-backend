@@ -1,7 +1,7 @@
 import { UserEntity } from '../../src/db/schema/entities';
 
 export const userMario: UserEntity = {
-  id: 3,
+  id: 1,
   username: 'MarioMario',
   email: 'mario@mushroom-kingdom.com',
   password: 'bingbingwahoo',
@@ -10,7 +10,7 @@ export const userMario: UserEntity = {
 };
 
 export const userSolidSnake: UserEntity = {
-  id: 5,
+  id: 2,
   username: 'SolidSnake',
   email: 'snake@foxhound.com',
   password: 'keptyouwaitinghuh',
