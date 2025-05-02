@@ -39,7 +39,7 @@ describe('PlatformsService', () => {
 
       const newPlatform = await service.create(requestPlaystation4);
 
-      expect(newPlatform).toEqual(mockPlaystation4);
+      expect(newPlatform).toEqual("mockPlaystation4");
       expect(platformsRepository.create).toHaveBeenCalledTimes(1);
       expect(platformsRepository.create).toHaveBeenCalledWith(
         requestPlaystation4,
