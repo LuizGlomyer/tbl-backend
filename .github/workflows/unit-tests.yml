@@ -29,13 +29,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-          cache-dependency-path: src/pnpm-lock.yaml
+          cache: pnpm
+          cache-dependency-path: api/pnpm-lock.yaml
 
       - name: Install Dependencies
-        working-directory: src
+        working-directory: api
         run: pnpm install --frozen-lockfile
 
       - name: Unit testing
-        working-directory: src
+        working-directory: api
         run: pnpm run test
