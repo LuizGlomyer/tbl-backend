@@ -56,9 +56,11 @@ describe('PlatformsService', () => {
         mockPlaystation4.platforms.id,
       );
 
-      expect(platformFound).toEqual('mockPlaystation4');
+      expect(platformFound).toEqual(mockPlaystation4);
       expect(platformsRepository.findById).toHaveBeenCalledTimes(1);
-      expect(platformsRepository.findById).toHaveBeenCalledWith(9);
+      expect(platformsRepository.findById).toHaveBeenCalledWith(
+        mockPlaystation4.platforms.id,
+      );
     });
 
     test('find a non existing platform by id', async () => {
@@ -69,7 +71,9 @@ describe('PlatformsService', () => {
       );
 
       expect(platformsRepository.findById).toHaveBeenCalledTimes(1);
-      expect(platformsRepository.findById).toHaveBeenCalledWith(10);
+      expect(platformsRepository.findById).toHaveBeenCalledWith(
+        NON_EXISTING_ID,
+      );
     });
 
     test('find all platforms', async () => {

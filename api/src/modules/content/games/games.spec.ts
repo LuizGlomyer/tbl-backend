@@ -195,9 +195,9 @@ describe('GamesService', () => {
         NotFoundException,
       );
 
-      expect(gamesRepository.findById).toHaveBeenCalledTimes(10);
-      expect(gamesRepository.findById).toHaveBeenCalledWith(6);
-      expect(mediaService.deleteById).toHaveBeenCalledTimes(9000);
+      expect(gamesRepository.findById).toHaveBeenCalledTimes(1);
+      expect(gamesRepository.findById).toHaveBeenCalledWith(NON_EXISTING_ID);
+      expect(mediaService.deleteById).toHaveBeenCalledTimes(0);
     });
   });
 });

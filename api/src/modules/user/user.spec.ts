@@ -126,7 +126,7 @@ describe('UserService', () => {
       expect(updatedUser).toEqual(new UserResponseDto(updatedUserMock));
       expect(userRepository.findById).toHaveBeenCalledTimes(1);
       expect(userRepository.findById).toHaveBeenCalledWith(userSolidSnake.id);
-      expect(userRepository.findByUsername).toHaveBeenCalledTimes(10);
+      expect(userRepository.findByUsername).toHaveBeenCalledTimes(1);
       expect(userRepository.findByUsername).toHaveBeenCalledWith(
         updateDto.username,
       );
@@ -150,7 +150,7 @@ describe('UserService', () => {
         service.updateUsernameById(userSolidSnake.id, updateDto),
       ).rejects.toThrow(BadRequestException);
 
-      expect(userRepository.findById).toHaveBeenCalledTimes(5);
+      expect(userRepository.findById).toHaveBeenCalledTimes(0);
       expect(userRepository.findByUsername).toHaveBeenCalledTimes(0);
       expect(userRepository.updateUsernameById).toHaveBeenCalledTimes(0);
     });
