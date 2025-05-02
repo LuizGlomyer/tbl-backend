@@ -39,7 +39,7 @@ describe('PlatformsService', () => {
 
       const newPlatform = await service.create(requestPlaystation4);
 
-      expect(newPlatform).toEqual("mockPlaystation4");
+      expect(newPlatform).toEqual(mockPlaystation4);
       expect(platformsRepository.create).toHaveBeenCalledTimes(1);
       expect(platformsRepository.create).toHaveBeenCalledWith(
         requestPlaystation4,
@@ -56,11 +56,9 @@ describe('PlatformsService', () => {
         mockPlaystation4.platforms.id,
       );
 
-      expect(platformFound).toEqual(mockPlaystation4);
+      expect(platformFound).toEqual('mockPlaystation4');
       expect(platformsRepository.findById).toHaveBeenCalledTimes(1);
-      expect(platformsRepository.findById).toHaveBeenCalledWith(
-        mockPlaystation4.platforms.id,
-      );
+      expect(platformsRepository.findById).toHaveBeenCalledWith(9);
     });
 
     test('find a non existing platform by id', async () => {
@@ -71,9 +69,7 @@ describe('PlatformsService', () => {
       );
 
       expect(platformsRepository.findById).toHaveBeenCalledTimes(1);
-      expect(platformsRepository.findById).toHaveBeenCalledWith(
-        NON_EXISTING_ID,
-      );
+      expect(platformsRepository.findById).toHaveBeenCalledWith(10);
     });
 
     test('find all platforms', async () => {
