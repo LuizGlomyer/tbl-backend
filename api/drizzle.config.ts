@@ -14,7 +14,11 @@ if (useTestDB) {
 
 export default defineConfig({
   dialect: 'postgresql',
-  schema: ['./src/db/schema/tables', './src/db/schema/tables/content'],
+  schema: [
+    './src/db/schema/tables',
+    './src/db/schema/tables/content',
+    './src/db/schema/tables/core',
+  ],
   out: './src/db/migrations',
   dbCredentials: {
     url: databaseUrl,
