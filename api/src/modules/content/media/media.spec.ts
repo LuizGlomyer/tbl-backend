@@ -49,6 +49,30 @@ describe('MediaService', () => {
       expect(mediaRepository.findById).toHaveBeenCalledTimes(1);
       expect(mediaRepository.findById).toHaveBeenCalledWith(NON_EXISTING_ID);
     });
+
+    test('find all media using a search', async () => {
+      jest
+        .spyOn(mediaRepository, 'findAll')
+        .mockResolvedValue([genericMediaMock]);
+
+      const mediaFound = await service.findAll('');
+
+      expect(mediaRepository.findAll).toHaveBeenCalledTimes(1);
+      expect(mediaRepository.findAll).toHaveBeenCalledWith('');
+      expect(mediaFound).toEqual([genericMediaMock]);
+    });
+
+    test('find media by filters', async () => {
+      jest
+        .spyOn(mediaRepository, 'findByFilters')
+        .mockResolvedValue([genericMediaMock]);
+
+      const mediaFound = await service.findByFilters({});
+
+      expect(mediaRepository.findByFilters).toHaveBeenCalledTimes(1);
+      expect(mediaRepository.findByFilters).toHaveBeenCalledWith({});
+      expect(mediaFound).toEqual([genericMediaMock]);
+    });
   });
 
   describe('deleting media', () => {

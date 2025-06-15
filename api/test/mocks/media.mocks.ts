@@ -19,8 +19,10 @@ export const MediaRepositoryMock: {
   provide: MediaRepository,
   useValue: {
     createWithTransaction: jest.fn(),
-    updatePlatformWithTransaction: jest.fn(),
+    findAll: jest.fn(),
     findById: jest.fn(),
+    findByFilters: jest.fn(),
+    updatePlatformWithTransaction: jest.fn(),
     deleteById: jest.fn(),
   },
 };
