@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { RequestMetadataMiddleware } from './common/middleware/request-metadata.middleware';
 import { LoggerModule } from './modules/logger/logger.module';
 import { ContentModule } from './modules/content/content.module';
+import { CoreModule } from './modules/core/core.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ContentModule } from './modules/content/content.module';
     }),
     UserModule,
     LoggerModule,
+    CoreModule,
     ContentModule,
   ],
   controllers: [AppController],
