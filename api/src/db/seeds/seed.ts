@@ -2,20 +2,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../../app.module';
 import { PlatformsService } from '../../modules/content/platforms/platforms.service';
-import {
-  requestNintendoSwitch,
-  requestPlaystation4,
-} from '../../../test/fixtures/platforms.fixtures';
-import { GamesService } from '../../modules/content/games/games.service';
-import { UserService } from '../../modules/user/user.service';
-import {
-  requestDeathStranding,
-  requestSmashBrosUltimate,
-} from '../../../test/fixtures/games.fixtures';
-import {
-  userMario,
-  userSolidSnake,
-} from '../../../test/fixtures/user.fixtures';
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { TABLE_USERS } from '../schema/tables/users';
 import { TABLE_PLATFORMS } from '../schema/tables/content/platforms';
@@ -23,15 +9,20 @@ import { TABLE_GAMES } from '../schema/tables/content/games';
 import { TABLE_MEDIA } from '../schema/tables/content/media';
 import { INestApplication } from '@nestjs/common';
 import { DatabaseType } from '../schema/schema';
-import { Status, TABLE_STATUS } from '../schema/tables/core/status';
-import { StatusEntity } from '../schema/entities';
+import { PlatformsSeeder } from './seeders/content/platforms.seeder';
+import { GamesSeeder } from './seeders/content/games.seeder';
+import { StatusSeeder } from './seeders/core/status.seeder';
+import { UserSeeder } from './seeders/core/users.seeder';
+import { TABLE_STATUS } from '../schema/tables/core/status';
+import { UserService } from '../../modules/user/user.service';
+import { GamesService } from '../../modules/content/games/games.service';
+import { UserMediaSeeder } from './seeders/core/user-media.seeder';
+import { UserMediaService } from '../../modules/core/user-media/user-media.service';
+import { TABLE__USER_MEDIA } from '../schema/tables/core/user_media';
 
 class DatabaseSeeder {
   private app: INestApplication;
   private db: NodePgDatabase<DatabaseType>;
-  private idPs4: number;
-  private idNintendoSwitch: number;
-  private status: StatusEntity[];
 
   constructor(app: INestApplication) {
     this.app = app;
@@ -55,6 +46,7 @@ class DatabaseSeeder {
       TABLE_PLATFORMS,
       TABLE_MEDIA,
       TABLE_STATUS,
+      TABLE__USER_MEDIA,
     ];
     for (const table of tables) {
       console.log(`TRUNCATE ${table}`);
@@ -63,59 +55,31 @@ class DatabaseSeeder {
     console.log('Tables truncated successfully\n');
   }
 
-  private async insertUsers() {
-    console.log('INSERT users');
-    const userService = this.app.get(UserService);
-    const mario = await userService.create(userMario);
-    const solidSnake = await userService.create(userSolidSnake);
-  }
-
-  private async insertPlatforms() {
-    console.log('INSERT platforms');
-    const platformsService = this.app.get(PlatformsService);
-    const ps4 = await platformsService.create(requestPlaystation4);
-    const nintendoSwitch = await platformsService.create(requestNintendoSwitch);
-    this.idPs4 = ps4.platforms.id;
-    this.idNintendoSwitch = nintendoSwitch.platforms.id;
-  }
-
-  private async insertGames() {
-    console.log('INSERT games');
-    const gamesService = this.app.get(GamesService);
-    requestDeathStranding.games.platformId = this.idPs4;
-    requestSmashBrosUltimate.games.platformId = this.idNintendoSwitch;
-    const deathStranding = await gamesService.create(requestDeathStranding);
-    const smashUltimate = await gamesService.create(requestSmashBrosUltimate);
-  }
-
-  private async insertStatus() {
-    console.log('INSERT status');
-
-    this.status = await this.db
-      .insert(Status)
-      .values([
-        { name: 'backlog' },
-        { name: 'in-progress' },
-        { name: 'completed' },
-        { name: 'on-hold' },
-        { name: 'dropped' },
-        { name: 'playing' },
-        { name: 'watching' },
-        { name: 'listening' },
-        { name: 'reading' },
-      ])
-      .returning();
-  }
-
   public async seed() {
     console.log('--Seeding start');
-
     await this.truncateTables();
-    await this.insertUsers();
-    await this.insertPlatforms();
-    await this.insertGames();
 
-    await this.insertStatus();
+    //#region Core Tables
+    const userSeeder = new UserSeeder(this.app.get(UserService));
+    await userSeeder.seed();
+
+    const statusSeeder = new StatusSeeder(this.db);
+    await statusSeeder.seed();
+    //#endregion
+
+    //#region Content Tables
+    const platformsSeeder = new PlatformsSeeder(this.app.get(PlatformsService));
+    await platformsSeeder.seed();
+
+    const gamesSeeder = new GamesSeeder(
+      this.app.get(GamesService),
+      platformsSeeder.platformIds,
+    );
+    await gamesSeeder.seed();
+    //#endregion
+
+    const userMediaSeeder = new UserMediaSeeder(this.app.get(UserMediaService));
+    await userMediaSeeder.seed();
 
     console.log('--Seeding end');
   }

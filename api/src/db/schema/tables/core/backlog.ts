@@ -31,7 +31,3 @@ export const Backlog = pgTable(TABLE_BACKLOG, {
   endDate: timestamp(),
   ...timestamps,
 });
-
-// personal commentary about this backlog
-// add specific things to other tables? ex: episodes watched, chapters read, etc.
-// games will have to point to the platform used and if is a replay

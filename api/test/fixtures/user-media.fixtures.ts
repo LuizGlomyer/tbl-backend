@@ -5,7 +5,7 @@ export const userMediaEntity: UserMediaEntity = {
   id: 1,
   userId: 1,
   mediaId: 2,
-  isFave: false,
+  isFavorite: false,
   favoriteReviewId: null,
   created_at: new Date(),
   updated_at: new Date(),

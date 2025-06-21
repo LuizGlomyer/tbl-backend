@@ -14,7 +14,7 @@ export const UserMedia = pgTable(TABLE__USER_MEDIA, {
   mediaId: integer()
     .notNull()
     .references(() => Media.id, { onDelete: 'cascade' }),
-  isFave: boolean().notNull().default(false),
+  isFavorite: boolean().notNull().default(false),
   favoriteReviewId: integer().references(() => Backlog.id),
   ...timestamps,
 });
