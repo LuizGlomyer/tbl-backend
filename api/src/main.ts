@@ -6,9 +6,11 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { DatabaseExceptionsFilter } from './common/filters/database-exceptions.filter';
 import { DefaultExceptionsFilter } from './common/filters/default-exceptions.filter';
 import { LoggerService } from './modules/logger/logger.service';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(helmet());
   app.enableCors();
   app.useGlobalInterceptors(new ResponseInterceptor());
   const loggerService = app.get(LoggerService);
