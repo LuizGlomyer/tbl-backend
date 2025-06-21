@@ -1,4 +1,4 @@
-import { CreateMediaDTO } from '../../src/common/dto/create-media.dto';
+import { CreateMediaDTO } from '../../src/common/dto/content/create-media.dto';
 import { MediaEntity } from '../../src/db/schema/entities';
 
 export const expectMediaEntity = (mock: MediaEntity) => {

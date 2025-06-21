@@ -1,8 +1,8 @@
 import {
   CreateGameDTO,
   RequestCreateGameDTO,
-} from '../../src/common/dto/create-game.dto';
-import { CreateMediaDTO } from '../../src/common/dto/create-media.dto';
+} from '../../src/common/dto/content/create-game.dto';
+import { CreateMediaDTO } from '../../src/common/dto/content/create-media.dto';
 import { MediaWithGames } from '../../src/common/types/media.types';
 import { GamesEntity, MediaEntity } from '../../src/db/schema/entities';
 import { TABLE_GAMES } from '../../src/db/schema/tables/content/games';

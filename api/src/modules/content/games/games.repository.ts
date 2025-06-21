@@ -3,7 +3,7 @@ import {
   CreateGameDTO,
   InsertGameDTO,
   RequestCreateGameDTO,
-} from '../../../common/dto/create-game.dto';
+} from '../../../common/dto/content/create-game.dto';
 import { MediaWithGames } from '../../../common/types/media.types';
 import { MediaRepository } from '../media/media.repository';
 import { DrizzleService } from '../../drizzle/drizzle.service';

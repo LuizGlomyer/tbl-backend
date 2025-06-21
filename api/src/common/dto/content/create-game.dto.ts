@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
-import { IsSafeIntId } from '../decorators/validators';
+import { IsSafeIntId } from '../../decorators/validators';
 import { CreateMediaDTO } from './create-media.dto';
 
 export class CreateGameDTO {

@@ -10,7 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { MediaService } from './media.service';
-import { MediaFiltersDTO, MediaSearchDTO } from '../../../common/dto/media.dto';
+import {
+  MediaFiltersDTO,
+  MediaSearchDTO,
+} from '../../../common/dto/content/media.dto';
 
 @Controller('media')
 export class MediaController {

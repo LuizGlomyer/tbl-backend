@@ -6,10 +6,10 @@ import { Media } from '../../../db/schema/tables/content/media';
 import {
   CreateMediaDTO,
   InsertMediaDTO,
-} from '../../../common/dto/create-media.dto';
+} from '../../../common/dto/content/create-media.dto';
 import { MediaEntity } from '../../../db/schema/entities';
 import { and, eq, ilike, or, SQL } from 'drizzle-orm';
-import { MediaFiltersDTO } from '../../../common/dto/media.dto';
+import { MediaFiltersDTO } from '../../../common/dto/content/media.dto';
 
 @Injectable()
 export class MediaRepository {

@@ -1,8 +1,8 @@
-import { CreateMediaDTO } from '../../src/common/dto/create-media.dto';
+import { CreateMediaDTO } from '../../src/common/dto/content/create-media.dto';
 import {
   CreatePlatformDTO,
   RequestCreatePlatformDTO,
-} from '../../src/common/dto/create-platform.dto';
+} from '../../src/common/dto/content/create-platform.dto';
 import { MediaWithPlatform } from '../../src/common/types/media.types';
 import { MediaEntity, PlatformsEntity } from '../../src/db/schema/entities';
 import { TABLE_PLATFORMS } from '../../src/db/schema/tables/content/platforms';

@@ -1,5 +1,5 @@
 import { IsOptional, IsString, MaxLength } from 'class-validator';
-import { MAX_PARAM_LENGTH } from '../constants/validator.constants';
+import { MAX_PARAM_LENGTH } from '../../constants/validator.constants';
 
 export class MediaSearchDTO {
   @IsOptional()

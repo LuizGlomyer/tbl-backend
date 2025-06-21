@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PlatformsRepository } from './platforms.repository';
-import { RequestCreatePlatformDTO } from '../../../common/dto/create-platform.dto';
+import { RequestCreatePlatformDTO } from '../../../common/dto/content/create-platform.dto';
 import { MediaWithPlatform } from '../../../common/types/media.types';
 import { MediaService } from '../media/media.service';
 

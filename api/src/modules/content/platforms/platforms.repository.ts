@@ -6,7 +6,7 @@ import {
   RequestCreatePlatformDTO,
   InsertPlatformDTO,
   CreatePlatformDTO,
-} from '../../../common/dto/create-platform.dto';
+} from '../../../common/dto/content/create-platform.dto';
 import {
   Platforms,
   TABLE_PLATFORMS,

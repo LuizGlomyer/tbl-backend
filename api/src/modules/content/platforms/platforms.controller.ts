@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { RequestCreatePlatformDTO } from '../../../common/dto/create-platform.dto';
+import { RequestCreatePlatformDTO } from '../../../common/dto/content/create-platform.dto';
 import { PlatformsService } from './platforms.service';
 
 @Controller('platforms')

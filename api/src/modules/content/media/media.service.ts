@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MediaRepository } from './media.repository';
 import { MediaEntity } from '../../../db/schema/entities';
-import { MediaFiltersDTO } from '../../../common/dto/media.dto';
+import { MediaFiltersDTO } from '../../../common/dto/content/media.dto';
 
 @Injectable()
 export class MediaService {

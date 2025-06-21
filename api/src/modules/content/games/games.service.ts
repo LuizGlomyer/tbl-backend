@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { GamesRepository } from './games.repository';
-import { RequestCreateGameDTO } from '../../../common/dto/create-game.dto';
+import { RequestCreateGameDTO } from '../../../common/dto/content/create-game.dto';
 import { MediaWithGames } from '../../../common/types/media.types';
 import { PlatformsRepository } from '../platforms/platforms.repository';
 import { MediaService } from '../media/media.service';

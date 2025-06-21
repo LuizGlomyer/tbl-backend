@@ -9,7 +9,7 @@ import {
 } from '../fixtures/platforms.fixtures';
 import { MediaWithPlatform } from '../../src/common/types/media.types';
 import { expectMediaEntity, expectMediaPartial } from './_e2e-utils';
-import { RequestCreatePlatformDTO } from '../../src/common/dto/create-platform.dto';
+import { RequestCreatePlatformDTO } from '../../src/common/dto/content/create-platform.dto';
 
 describe('PlatformsController (e2e)', () => {
   let app: INestApplication;
