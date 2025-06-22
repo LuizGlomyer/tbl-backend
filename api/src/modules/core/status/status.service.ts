@@ -12,7 +12,7 @@ export class StatusService {
 
   async findByIdOrThrow(id: number): Promise<StatusEntity> {
     const status = await this.statusRepository.findById(id);
-    if (!status) throw new NotFoundException();
+    if (!status) throw new NotFoundException('Status not found');
     return status;
   }
 }

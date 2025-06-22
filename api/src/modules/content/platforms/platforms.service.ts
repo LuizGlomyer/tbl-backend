@@ -30,11 +30,11 @@ export class PlatformsService {
 
   async findByIdOrThrow(id: number): Promise<MediaWithPlatform> {
     const platform = await this.findById(id);
-    if (!platform) throw new NotFoundException();
+    if (!platform) throw new NotFoundException('Platform not found');
     return platform;
   }
 
-  async updatePlatformById(id: number, data: RequestCreatePlatformDTO) {
+  async updateById(id: number, data: RequestCreatePlatformDTO) {
     const platformToUpdate = await this.findByIdOrThrow(id);
     const updatedPlatform = await this.platformsRepository.updateById(
       platformToUpdate.platforms.id,

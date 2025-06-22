@@ -32,10 +32,10 @@ export class PlatformsController {
 
   @Put(':id')
   async updateById(
-    @Param('id', ParseIntPipe) platformId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() data: RequestCreatePlatformDTO,
   ) {
-    return this.platformsService.updatePlatformById(platformId, data);
+    return this.platformsService.updateById(id, data);
   }
 
   @Delete(':id')

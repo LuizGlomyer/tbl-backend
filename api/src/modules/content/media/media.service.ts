@@ -17,11 +17,13 @@ export class MediaService {
 
   async findByIdOrThrow(id: number): Promise<MediaEntity> {
     const media = await this.mediaRepository.findById(id);
-    if (!media) throw new NotFoundException();
+    if (!media) throw new NotFoundException('Media not found');
     return media;
   }
 
   async deleteById(id: number): Promise<MediaEntity> {
-    return this.mediaRepository.deleteById(id);
+    const mediaToDelete = await this.findByIdOrThrow(id);
+    await this.mediaRepository.deleteById(id);
+    return mediaToDelete;
   }
 }

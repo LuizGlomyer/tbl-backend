@@ -13,8 +13,16 @@ export class UserSeeder {
 
   async seed() {
     console.log(`INSERT ${TABLE_USERS}`);
-    this.userEntities.mario = (await this.userService.create(userMario))!;
-    this.userEntities.solidSnake =
-      (await this.userService.create(userSolidSnake))!;
+
+    this.userEntities.mario = (await this.userService.create({
+      email: userMario.email,
+      password: userMario.password,
+      username: userMario.username,
+    }))!;
+    this.userEntities.solidSnake = (await this.userService.create({
+      email: userSolidSnake.email,
+      password: userSolidSnake.password,
+      username: userSolidSnake.username,
+    }))!;
   }
 }

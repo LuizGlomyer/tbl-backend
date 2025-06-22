@@ -17,13 +17,7 @@ export class UserRepository {
   }
 
   async create(data: CreateUserDTO): Promise<UserEntity> {
-    const user: typeof Users.$inferInsert = {
-      username: data.username,
-      email: data.email,
-      password: data.password,
-    };
-    const [newUser] = await this.db.insert(Users).values(user).returning();
-
+    const [newUser] = await this.db.insert(Users).values(data).returning();
     return newUser;
   }
 

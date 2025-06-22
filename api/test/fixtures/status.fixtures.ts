@@ -1,11 +1,11 @@
 import { StatusEntity } from '../../src/db/schema/entities';
 
-export const statusBacklog: StatusEntity = {
+export const statusEntityBacklog: StatusEntity = {
   id: 1,
   name: 'backlog',
 };
 
-export const statusInProgress: StatusEntity = {
+export const statusEntityInProgress: StatusEntity = {
   id: 2,
   name: 'in-progress',
 };

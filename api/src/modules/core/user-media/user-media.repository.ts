@@ -7,6 +7,7 @@ import { UserMediaEntity } from '../../../db/schema/entities';
 import { and, eq } from 'drizzle-orm';
 import { UserMedia } from '../../../db/schema/tables/core/user_media';
 import { UserMediaDTO } from '../../../common/dto/core/user-media.dto';
+import { getDrizzleSingleResult } from '../../../db/utils';
 
 @Injectable()
 export class UserMediaRepository {
@@ -18,13 +19,19 @@ export class UserMediaRepository {
 
   async create(data: UserMediaDTO): Promise<UserMediaEntity> {
     const result = await this.db.insert(UserMedia).values(data).returning();
-    const userMedia = Array.isArray(result) ? result[0] : undefined;
-    return userMedia;
+    return getDrizzleSingleResult(result) as UserMediaEntity;
   }
 
   async findAll(): Promise<UserMediaEntity[]> {
     const results = await this.db.select().from(UserMedia);
     return results as UserMediaEntity[];
+  }
+
+  async findById(id: number): Promise<UserMediaEntity | undefined> {
+    const result = await this.db.query.UserMedia.findFirst({
+      where: eq(UserMedia.id, id),
+    });
+    return result as UserMediaEntity | undefined;
   }
 
   async findByPrimaryKey(

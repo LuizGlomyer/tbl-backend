@@ -33,7 +33,7 @@ export class GamesService {
 
   async findByIdOrThrow(id: number): Promise<MediaWithGames> {
     const game = await this.findById(id);
-    if (!game) throw new NotFoundException();
+    if (!game) throw new NotFoundException('Game not found');
     return game;
   }
 

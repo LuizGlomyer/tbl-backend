@@ -40,6 +40,12 @@ export class UserMediaService {
     return this.userMediaRepository.findAll();
   }
 
+  async findByIdOrThrow(id: number): Promise<UserMediaEntity> {
+    const userMedia = await this.userMediaRepository.findById(id);
+    if (!userMedia) throw new NotFoundException('UserMedia not found');
+    return userMedia;
+  }
+
   async findByPrimaryKeyOrThrow(
     params: UserMediaDTO,
   ): Promise<UserMediaEntity> {
@@ -47,7 +53,7 @@ export class UserMediaService {
       params.userId,
       params.mediaId,
     );
-    if (!userMedia) throw new NotFoundException();
+    if (!userMedia) throw new NotFoundException('UserMedia not found');
     return userMedia;
   }
 }

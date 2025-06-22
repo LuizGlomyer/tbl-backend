@@ -46,7 +46,7 @@ export class UserService {
 
   async findByIdOrThrow(id: number) {
     const user = await this.findById(id);
-    if (!user?.id) throw new NotFoundException();
+    if (!user?.id) throw new NotFoundException('User not found');
     return user;
   }
 
@@ -54,7 +54,7 @@ export class UserService {
     this.validateUsername(data.username);
 
     const userToUpdate = await this.userRepository.findById(id);
-    if (!userToUpdate) throw new NotFoundException();
+    if (!userToUpdate) throw new NotFoundException('User not found');
 
     const usernameAlreadyExists = await this.userRepository.findByUsername(
       data.username,

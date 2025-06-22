@@ -10,6 +10,7 @@ export const UserMediaServiceMock: {
     findByPrimaryKeyOrElseCreate: jest.fn(),
     create: jest.fn(),
     findAll: jest.fn(),
+    findByIdOrThrow: jest.fn(),
     findByPrimaryKeyOrThrow: jest.fn(),
   },
 };
@@ -22,6 +23,7 @@ export const UserMediaRepositoryMock: {
   useValue: {
     create: jest.fn(),
     findAll: jest.fn(),
+    findById: jest.fn(),
     findByPrimaryKey: jest.fn(),
   },
 };

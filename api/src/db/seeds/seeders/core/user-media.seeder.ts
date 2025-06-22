@@ -22,5 +22,9 @@ export class UserMediaSeeder {
       userId: 2,
       mediaId: 1,
     });
+    await this.userMediaService.create({
+      userId: 2,
+      mediaId: 3,
+    });
   }
 }

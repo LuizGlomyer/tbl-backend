@@ -96,7 +96,7 @@ describe('PlatformsService', () => {
       jest
         .spyOn(platformsRepository, 'findById')
         .mockResolvedValue(mockPlaystation4);
-      const updatedPlatform = await service.updatePlatformById(
+      const updatedPlatform = await service.updateById(
         mockPlaystation4.platforms.id,
         requestPlaystation4,
       );
@@ -118,7 +118,7 @@ describe('PlatformsService', () => {
       jest.spyOn(platformsRepository, 'updateById');
       jest.spyOn(platformsRepository, 'findById').mockResolvedValue(undefined);
       await expect(
-        service.updatePlatformById(NON_EXISTING_ID, requestPlaystation4),
+        service.updateById(NON_EXISTING_ID, requestPlaystation4),
       ).rejects.toThrow(NotFoundException);
       expect(platformsRepository.findById).toHaveBeenCalledTimes(1);
       expect(platformsRepository.updateById).toHaveBeenCalledTimes(0);

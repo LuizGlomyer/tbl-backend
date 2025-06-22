@@ -1,2 +1,4 @@
 export const DATABASE_MAX_POSITIVE_INT = 2_147_483_647;
 export const MAX_PARAM_LENGTH = 2000;
+export const MAX_INTERVAL_HOURS_DIGITS = 6;
+export const MAX_TEXT_CHARACTERS = 20000;

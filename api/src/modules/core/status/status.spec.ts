@@ -6,8 +6,8 @@ import { NON_EXISTING_ID } from '../../../../test/test.utils';
 import { NotFoundException } from '@nestjs/common';
 import { StatusRepositoryMock } from '../../../../test/mocks/status.mocks';
 import {
-  statusBacklog,
-  statusInProgress,
+  statusEntityBacklog,
+  statusEntityInProgress,
 } from '../../../../test/fixtures/status.fixtures';
 
 describe('MediaService', () => {
@@ -29,13 +29,17 @@ describe('MediaService', () => {
 
   describe('finding status', () => {
     test('find status by id', async () => {
-      jest.spyOn(statusRepository, 'findById').mockResolvedValue(statusBacklog);
+      jest
+        .spyOn(statusRepository, 'findById')
+        .mockResolvedValue(statusEntityBacklog);
 
-      const statusFound = await service.findByIdOrThrow(statusBacklog.id);
+      const statusFound = await service.findByIdOrThrow(statusEntityBacklog.id);
 
-      expect(statusFound).toEqual(statusBacklog);
+      expect(statusFound).toEqual(statusEntityBacklog);
       expect(statusRepository.findById).toHaveBeenCalledTimes(1);
-      expect(statusRepository.findById).toHaveBeenCalledWith(statusBacklog.id);
+      expect(statusRepository.findById).toHaveBeenCalledWith(
+        statusEntityBacklog.id,
+      );
     });
 
     test('find a non existing media by id', async () => {
@@ -52,13 +56,13 @@ describe('MediaService', () => {
     test('find all status', async () => {
       jest
         .spyOn(statusRepository, 'findAll')
-        .mockResolvedValue([statusBacklog, statusInProgress]);
+        .mockResolvedValue([statusEntityBacklog, statusEntityInProgress]);
 
       const mediaFound = await service.findAll();
 
       expect(statusRepository.findAll).toHaveBeenCalledTimes(1);
       expect(statusRepository.findAll).toHaveBeenCalledWith();
-      expect(mediaFound).toEqual([statusBacklog, statusInProgress]);
+      expect(mediaFound).toEqual([statusEntityBacklog, statusEntityInProgress]);
     });
   });
 });
